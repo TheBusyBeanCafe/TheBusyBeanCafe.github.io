@@ -8,6 +8,7 @@ const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
 
 var menu, drink_addons, modal, pass, passmodal;
 
+var sugarCount = 0;
 let orderedCoffees = [];
 
 addEventListener("load", () => {
@@ -109,6 +110,13 @@ function doneclicked() {
 
 	dialogShownObj["large"] = document.getElementById("drink-options-content").querySelectorAll("[data-button-group='size']")[1].classList.contains("dialog-button-selected");
 
+	dialogShownObj["sugar"] = sugarCount;
+
+	sugarCount = 0;
+
+	document.getElementById("sugar-counter-minus").style.display = "none";
+	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S</h2>`;
+
 
 	[].slice.call(document.getElementById("drink-options-content")
 		.querySelectorAll("[data-button-group].dialog-button-selected")).forEach(function(element) {
@@ -146,8 +154,11 @@ function doneclicked() {
 		});
 	}
 
+	console.log(dialogShownObj)
+
 	updCurTransList()
 }
+
 
 
 
@@ -159,8 +170,10 @@ function coffeeClicked(idx) {
 		dialogShownObj = {
 			index: idx,
 			count: 1, // TODO also do post
+			sugar: 0,
 			is_done: false
 		};
+		
 		[].slice.call(document.getElementsByClassName("hide-when-no-milk")).forEach(function(elem) {
 			elem.style.display = item.has_milk ? "flex" : "none"
 		});
@@ -170,6 +183,31 @@ function coffeeClicked(idx) {
     } else {
 		orderedCoffees.push({index: idx, date: Date.now()});
 		updCurTransList()
+	}
+}
+
+function sugarClicked() {
+	sugarCount += 1
+	
+	console.log(sugarCount)
+
+	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S<span style="font-size: 2.4vh">x${sugarCount}</span></h2>`
+
+	if (sugarCount != 0) {
+		document.getElementById("sugar-counter-minus").style.display = "block";
+	}
+}
+
+function sugarMinused() {
+	sugarCount = Math.max(sugarCount-1, 0)
+	
+	console.log(sugarCount)
+
+	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S<span style="font-size: 2.4vh">x${sugarCount}</span></h2>`
+
+	if (sugarCount == 0) {
+		document.getElementById("sugar-counter-minus").style.display = "none";
+		document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S</h2>`
 	}
 }
 

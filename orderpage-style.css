@@ -295,11 +295,27 @@ input[type=password] {
 }
 
 
-.counter-button-minus {
-	width: 32px;
-	height: 32px;
+.counter-minus {
+	width: 2.8vw;
+	height: 2.8vw;
+
+	z-index: 200;
 }
 
+.counter-button-minus {
+	display: none;
+
+	width: 100%;
+	height: 3vw;
+
+	background: #ffceca;
+	border-radius: 0.6vw;
+	border: 0px;
+	margin-top: 1vh;
+
+	z-index: 200;
+
+}
 
 #done-pw {
 	height: 8vh;
