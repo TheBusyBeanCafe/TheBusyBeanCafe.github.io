@@ -18,11 +18,13 @@ function getPass() {
 	passmodal.style.display = "flex"
 }
 
-function donepwclicked() {
+async function donepwclicked() {
 	pass = btoa(document.getElementById("password").value)
-	if (getMenuItems(API_URL + "menu") === false) {
+	var res = await getMenuItems(API_URL + "menu")
+	if ( res === false) {
 		console.log("wrong pass")
 	} else {
+		passmodal.style.display = "none"
 		console.log("right pass")
 	}
 }
@@ -62,7 +64,7 @@ function postCoffee(coffee) {
 		method: "POST",
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': 'Basic Q8xTy1zafJmh4R/p9bh11eOcUad/gjoRIeeU214lgtw='
+			'Authorization': 'Basic ' + pass
 		},
 		body: JSON.stringify(coffee)
 	})
@@ -129,7 +131,7 @@ function doneclicked() {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Basic Q8xTy1zafJmh4R/p9bh11eOcUad/gjoRIeeU214lgtw='
+				'Authorization': 'Basic ' + pass
 			},
 			body: JSON.stringify(dialogShownObj)
 		});
@@ -138,7 +140,7 @@ function doneclicked() {
 			method: "PUT",
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Basic Q8xTy1zafJmh4R/p9bh11eOcUad/gjoRIeeU214lgtw='
+				'Authorization': 'Basic ' + pass
 			},
 			body: JSON.stringify(dialogShownObj)
 		});
