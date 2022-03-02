@@ -18,8 +18,13 @@ function getPass() {
 	passmodal.style.display = "flex"
 }
 
-function donePwclicked() {
-	getMenuItems(API_URL + "menu");
+function donepwclicked() {
+	pass = btoa(document.getElementById("password").value)
+	if (getMenuItems(API_URL + "menu") === false) {
+		console.log("wrong pass")
+	} else {
+		console.log("right pass")
+	}
 }
 
 
@@ -203,9 +208,12 @@ async function getMenuItems(url) {
 		{
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Basic Q8xTy1zafJmh4R/p9bh11eOcUad/gjoRIeeU214lgtw='
+				'Authorization': 'Basic ' + pass
 			}
 		});
+	if (response.status == 401) {
+		return false
+	}
 	json = await response.json();
 	menu = json["menu"]
 	drink_addons = json["drink_addons"]
