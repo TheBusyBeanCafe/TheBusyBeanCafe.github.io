@@ -1,16 +1,26 @@
 
 
-const API_URL = "http://127.0.0.1:5000/";
+const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
 
 
 
 
 
-var menu, drink_addons, modal;
+var menu, drink_addons, modal, pass, passmodal;
 
 let orderedCoffees = [];
 
+addEventListener("load", () => {
+})
 
+function getPass() {
+	passmodal = document.getElementById("pass-modal");
+	passmodal.style.display = "flex"
+}
+
+function donePwclicked() {
+	getMenuItems(API_URL + "menu");
+}
 
 
 function getOrderSubText() {
@@ -370,10 +380,13 @@ function confirmCancelEnd() {
 		document.getElementById("cancel-endshift-button").style.display = "none";
 	})
 }
-getMenuItems(API_URL + "menu");
-
 
 window.addEventListener("load", () => {
+	if (pass == null) {
+		getPass()
+	}
+
+
 	getCurrentDate();
 	modal = document.getElementById("drink-options-modal");
 	

@@ -277,8 +277,20 @@ body {
 	height: 70vh;
 }
 
+input[type=password]:focus {
+    outline: none;
+	border: 4px solid #DFC6A9;
+}
+
+input[type=password] {
+	border: 4px solid gray;
+	transition: border 0.2s;
+	border-radius: 12px;
+	height: 36px;
+}
 
 .dialog-title {
+	margin: 0;
 	font-family: visbyround-medium;
 	font-size: 4.4vw;
 	vertical-align: bottom;
