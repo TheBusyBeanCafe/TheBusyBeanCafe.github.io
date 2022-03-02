@@ -163,6 +163,7 @@ function coffeeClicked(idx) {
 		}
 
 		document.getElementById("dialog-drink-title").innerHTML = getCurrentOrderItem(idx);
+		document.getElementById("add-or-edit-title").innerHTML = "New Order"
     } else {
 		orderedCoffees.push({index: idx, date: Date.now()});
 		updCurTransList()
@@ -334,6 +335,9 @@ function completeOrder(idx) {
 	modal.style.display = "flex"
 
 	dialogShownObj = orderedCoffees[idx];
+
+	document.getElementById("dialog-drink-title").innerHTML = getCurrentOrderItem(idx);
+	document.getElementById("add-or-edit-title").innerHTML = "Edit Order";
 
 	[].slice.call(document.getElementById("drink-options-content")
 		.querySelectorAll("[data-button-group].dialog-button-selected")).forEach(function(element) {
