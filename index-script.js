@@ -9,52 +9,50 @@ function getCurrentDate() {
 
 
 async function getIntroText(url) {
-	var introText = "";
+	function getShiftSub() {
+
+		var currentDate = new Date();
+		var hour = currentDate.getHours();
+		var day = currentDate.getDay();
+
+		var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]
+		
+		
+		function getShiftName(hour) {
+			if (hour >= 7 && hour <= 9) {
+				return ", Morning Shift";
+			} else if (hour >= 12 && hour <= 14) {
+				return ", Lunch Shift";
+			} else {
+				return ", (No Shift Selected)";
+			}
+		}
+
+		return weekday + getShiftName(hour);
+	}
+
+	document.getElementById("shift-sub").textContent = getShiftSub();
+
+	
+
 
 	var currentDate = new Date();
 	var hour = currentDate.getHours();
 	var day = currentDate.getDay();
 	
-	/* *********************/
-
-	/*
-	day = 4;
-	hour = 8;
-	*/
-
-	const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-	var weekday = weekdays[day]
-
-
-	function getShiftName(hour) {
-		if (hour >= 7 && hour <= 9) {
-			return "Morning Shift";
-		} else if (hour >= 12 && hour <= 14) {
-			return "Lunch Shift";
-		} else {
-			return "";
-		}
-	}
-
-	var shift = getShiftName(hour);
-
-
-	document.getElementById("shift-sub").textContent = weekday + ", " + shift;
-
-	
-
-	// sunday = 0 saturday = 6
-
+	var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]
 	
 
 
-
-
+	// intro text message
 	var dateMessage = "";
-
 	var currentShift = true;
 	var shiftNumber = 0;
 
+
+	introText = "";
+
+	// define intro text
 	if (hour >= 7 && hour <= 9) {
 		dateMessage = "Good Morning,"
 	} else if (hour >= 12 && hour <= 14) {
@@ -65,12 +63,12 @@ async function getIntroText(url) {
 		dateMessage = "Hello!"
 	}
 
-
 	introText += dateMessage;
 
 
-	var nameMessage = "";
 
+	// define name message
+	var nameMessage = "";
 
 	if (day != 0 && day != 6) {
 		if (currentShift) {
@@ -79,15 +77,12 @@ async function getIntroText(url) {
 
 			nameMessage += json[day-1][shiftNumber][0] + " & " + json[day-1][shiftNumber][1];
 		}
-	} else {
-		console.log("saturday sunday")
-	}
+	} 
 
 
 	document.getElementById("main-heading").innerHTML = `<h1><span style="font-family:visbyround-bold">${dateMessage}</span> ${nameMessage}</h1>`
 
 
-	console.log(dateMessage)
 
 	return introText
 }

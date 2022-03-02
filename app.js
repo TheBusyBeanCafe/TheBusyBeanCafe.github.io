@@ -58,7 +58,6 @@ function getOrderSubText() {
 }
 
 function postCoffee(coffee) {
-	console.log(coffee)
 	fetch(API_URL + "transactions", {
 		method: "POST",
 		headers: {
@@ -90,7 +89,6 @@ function doneclicked() {
 
 	var newobj = dialogShownObj["id"] == null;
 
-	console.log(newobj);
 
 	[].slice.call(document.getElementById("drink-options-content")
 		.querySelectorAll("[data-button-group='milk']"))
@@ -126,7 +124,6 @@ function doneclicked() {
 	if (newobj) {
 		dialogShownObj["id"] = uuidv4()
 		orderedCoffees.push(dialogShownObj);
-		console.log(dialogShownObj);
 
 		fetch(API_URL + "transactions", {
 			method: "POST",
@@ -186,7 +183,6 @@ function getCurrentDate() {
 
 function getCurrentName() {
 	data = asyncFetch(API_URL + "shift");
-	console.log(data);
 }
 
 async function asyncFetch(url) {
@@ -243,7 +239,6 @@ function displayData(data) {
 		data.forEach(function(element, index) { 
 			let itemName = "hstack-item" + index;
 			
-			console.log(itemName);
 			
 			if (index > 1 && index != 8 && index != 9) {
 				document.getElementById(itemName).innerHTML = `
@@ -370,7 +365,6 @@ function endShift() {
 		document.getElementById("confirm-endshift-button").style.display = "block";
 		document.getElementById("cancel-endshift-button").style.display = "block";
 
-		console.log("pressed")
 	})
 }
 
