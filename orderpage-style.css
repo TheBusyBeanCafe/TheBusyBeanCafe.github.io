@@ -295,9 +295,14 @@ input[type=password] {
 }
 
 
+.counter-button-minus {
+	width: 32px;
+	height: 32px;
+}
+
 
 #done-pw {
-	height: 8vh;	
+	height: 8vh;
 }
 
 #pass-modal-content {

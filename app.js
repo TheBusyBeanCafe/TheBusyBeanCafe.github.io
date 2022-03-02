@@ -160,7 +160,10 @@ function coffeeClicked(idx) {
 			index: idx,
 			count: 1, // TODO also do post
 			is_done: false
-		}
+		};
+		[].slice.call(document.getElementsByClassName("hide-when-no-milk")).forEach(function(elem) {
+			elem.style.display = item.has_milk ? "flex" : "none"
+		});
 
 		document.getElementById("dialog-drink-title").innerHTML = getCurrentOrderItem(idx);
 		document.getElementById("add-or-edit-title").innerHTML = "New Order"

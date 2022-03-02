@@ -67,13 +67,14 @@
 						<button type="button" class="dialog-button dialog-button-counter">
 							<h2 class="button-short-name">S</h2>
 							<p class="button-long-name">Sugar</p>
+							<img class="counter-button-minus" src="images/minus.png">
 						</button> 
 					</div>
 				</div>
 				
 				
 				<div class="subtitle-hstack">
-					<h3 class="dialog-subtitle">Milks</h3>
+					<h3 class="dialog-subtitle hide-when-no-milk">Milks</h3>
 
 
 					<h3 class="dialog-subtitle">Syrups</h3>
@@ -83,7 +84,7 @@
 				
 				
 				<div id="modal-hstack-small1" class="modal-hstack">
-					<div id="modal-hstack-small1-left" class="modal-hstack">
+					<div id="modal-hstack-small1-left" class="modal-hstack hide-when-no-milk">
 						<div id="mhst-2-big" class="modal-hstack-item">
 							<button type="button" class="dialog-button dialog-button-selected" data-button-default="true" data-button-group="milk" onclick="diagButtonClick(this)">
 								<h2 class="button-short-name-s">R</h2>
@@ -153,6 +154,7 @@
 									<button type="button" class="dialog-button dialog-button-counter">
 										<p class="button-long-name-only">
 											Vanilla
+											<img class="counter-button-minus" src="images/minus.png">
 										</p>
 									</button>
 								</div>
