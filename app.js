@@ -6,16 +6,22 @@ const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
 
 
 
-var menu, drink_addons, modal, pass, passmodal;
+var menu, drink_addons, modal, pass, passmodal, g_api_key, sheets_total_row;
 
 let orderedCoffees = [];
+let preOrderedCoffees = [];
 
-addEventListener("load", () => {
-})
 
 function getPass() {
 	passmodal = document.getElementById("pass-modal");
 	passmodal.style.display = "flex"
+}
+
+
+async function updateSheetTotalRows() {
+	const response = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE?key=' + g_api_key)
+	var json = await response.json();
+	sheets_total_row = json.sheets[0].properties.gridProperties.rowCount;
 }
 
 async function donepwclicked() {
@@ -25,6 +31,34 @@ async function donepwclicked() {
 		console.log("wrong pass")
 	} else {
 		passmodal.style.display = "none"
+		const response = await fetch(API_URL + "g_api_key",
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Basic ' + pass
+				}
+			});
+		g_api_key = await response.json()
+		console.log(g_api_key)
+		
+
+		updateSheetTotalRows()
+
+		setInterval(async () => {
+			const response2 = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE/values/A2:I' + sheets_total_row + '?key=' + g_api_key)
+			var json = await response2.json();
+
+			preOrderedCoffees = []
+			for (row of json.values) {
+				// TODO dont clear and iterate
+				preOrderedCoffees.push(
+					{
+						
+					}
+				)
+			}
+		}, 10 * 1000);
+		console.log(sheets_total_row)
 		console.log("right pass")
 	}
 }
