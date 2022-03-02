@@ -13,13 +13,13 @@
 <body>
 	<div id="pass-modal" class="modal-bg">
 		<div id="pass-modal-content" class="modal-content">
-			<h2 class="dialog-title">
+			<h2 id="pass-title" class="dialog-title">
 				Please Login
 			</h2>
 			<input id="password" type="password" onkeydown="if (event.keyCode == 13) document.getElementById('done-pw').click()">
 			<button type="button" id="done-pw" class="dialog-button" onclick="donepwclicked()">
-				<h2 class="button-short-name">
-					DONE
+				<h2 id="pass-done" class="button-short-name">
+					LOGIN
 				</h2>
 			</button>
 		</div>

@@ -277,17 +277,53 @@ body {
 	height: 70vh;
 }
 
+#password {
+	font-size: 1.5vw;
+}
+
 input[type=password]:focus {
     outline: none;
-	border: 4px solid #DFC6A9;
+	border: 3px solid #DFC6A9;
 }
 
 input[type=password] {
-	border: 4px solid gray;
+	border: 3px solid gray;
 	transition: border 0.2s;
-	border-radius: 12px;
-	height: 36px;
+	border-radius: 0.5vw;
+	height: 10vh;
 }
+
+
+
+#done-pw {
+	height: 8vh;	
+}
+
+#pass-modal-content {
+	background-color: #EBEBEB;
+	border-radius: 0.5vw;
+	
+	display: flex;
+	flex-direction: column;
+	gap: 1.4vh;
+	
+	padding: 1vw;
+
+	width: 20vw;
+	height: 18vh;
+}
+
+#pass-title {
+	font-size: 2.75vw;
+	font-family: visbyround-medium;
+}
+
+#pass-done {
+	font-size: 1.8vw;
+	font-family: "Roboto Mono";
+	font-weight: 600;
+}
+
 
 .dialog-title {
 	margin: 0;
@@ -543,6 +579,17 @@ input[type=password] {
 	background-color: #ffecb3;
 }
 
+.dialog-subtitle {
+	font-size: 3vh;
+	font-family: visbyround-regular;
+
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+
+#done {
+	background: #A5D6A7;
+}
 
 
 
@@ -605,22 +652,4 @@ input[type=password] {
 
 	margin: 0px;
 	padding: 0px;
-}
-
-
-
-
-
-
-
-.dialog-subtitle {
-	font-size: 3vh;
-	font-family: visbyround-regular;
-
-	margin-bottom: 0px;
-	padding-bottom: 0px;
-}
-
-#done {
-	background: #A5D6A7;
 }
