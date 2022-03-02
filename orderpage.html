@@ -64,10 +64,12 @@
 					
 					<div id="mhst-1-small" class="modal-hstack-item">
 						
-						<button type="button" class="dialog-button dialog-button-counter">
-							<h2 class="button-short-name">S</h2>
+						<button id="sugar-counter" type="button" class="dialog-button dialog-button-counter" onclick="sugarClicked()">
+							<h2 id="sugar-title" class="button-short-name">S</h2>
 							<p class="button-long-name">Sugar</p>
-							<img class="counter-button-minus" src="images/minus.png">
+							<button id="sugar-counter-minus" class="counter-button-minus" type="button" onclick="sugarMinused()">
+								<img class="counter-minus" src="images/minus.png">
+							</button>
 						</button> 
 					</div>
 				</div>
