@@ -24,6 +24,7 @@ async function updateSheetTotalRows() {
 	sheets_total_row = json.sheets[0].properties.gridProperties.rowCount;
 }
 
+
 async function donepwclicked() {
 	pass = btoa(document.getElementById("password").value)
 	var res = await getMenuItems(API_URL + "menu")
@@ -39,10 +40,7 @@ async function donepwclicked() {
 				}
 			});
 		g_api_key = await response.json()
-		console.log(g_api_key)
 
-		console.log(response);
-		
 
 		updateSheetTotalRows()
 
@@ -54,10 +52,12 @@ async function donepwclicked() {
 			for (row of json.values) {
 				// TODO dont clear and iterate
 				preOrderedCoffees.push(
-					{
-						
-					}
+					
+						row
+					
 				)
+
+				console.log(preOrderedCoffees);
 			}
 		}, 10 * 1000);
 		console.log(sheets_total_row)

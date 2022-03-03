@@ -282,6 +282,11 @@ body {
 	font-size: 1.5vw;
 }
 
+input[type=password]:invalid {
+	outline: none;
+	border: 3px solid red;
+}
+
 input[type=password]:focus {
     outline: none;
 	border: 3px solid #DFC6A9;
