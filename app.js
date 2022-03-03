@@ -40,6 +40,8 @@ async function donepwclicked() {
 			});
 		g_api_key = await response.json()
 		console.log(g_api_key)
+
+		console.log(response);
 		
 
 		updateSheetTotalRows()
@@ -381,10 +383,16 @@ function updCurTransList() {
 		
 		if (getMilkType(element.milk)!=0) {
 			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">${getMilkType(element.milk)}</span>`
-		} else {
-			tempBlock += `</p>`
+		} 
+
+		console.log(element.milk);
+		console.log(element.sugar);
+
+		if (element.sugar != 0) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Sugars: ${element.sugar}</span>`
 		}
 
+		tempBlock += `</p>`;
 
 
 		display += tempBlock;
