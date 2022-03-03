@@ -1,5 +1,5 @@
-const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
-// const API_URL = "http://127.0.0.1:5000/";
+// const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
+const API_URL = "http://127.0.0.1:5000/";
 
 
 
@@ -9,7 +9,9 @@ var menu, drink_addons, modal, pass, passmodal, g_api_key, sheets_total_row;
 
 var sugarCount = 0;
 let orderedCoffees = [];
-let preOrderedCoffees = [];
+var preOrderedCoffees = [];
+
+var donePreorders = [];
 
 
 function getPass() {
@@ -48,22 +50,103 @@ async function donepwclicked() {
 			const response2 = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE/values/A2:I' + sheets_total_row + '?key=' + g_api_key)
 			var json = await response2.json();
 
-			preOrderedCoffees = []
-			for (row of json.values) {
-				// TODO dont clear and iterate
-				preOrderedCoffees.push(
-					
-						row
-					
-				)
 
-				console.log(preOrderedCoffees);
+			preOrderedCoffees = json.values;
+
+			console.log(preOrderedCoffees.length)
+			console.log(donePreorders.length)
+
+			if (preOrderedCoffees.length > donePreorders.length) {
+				let difference = (preOrderedCoffees.length - donePreorders.length);
+
+				console.log("difference")
+				console.log(difference)
+
+				for (var i = 0; i < difference; i++) {
+					donePreorders.push(false)
+				}
 			}
+
+
+			console.log(preOrderedCoffees);
+			console.log(donePreorders)
+
+			updPreOrderList();
+
+
 		}, 10 * 1000);
 		console.log(sheets_total_row)
 		console.log("right pass")
 	}
 }
+
+function updPreOrderList() {
+	function getMilkType(ix) {
+		if (ix==0) {
+			return "";
+		} else {
+			return "→ Milk: " + ["Full", "Lite", "Almond", "Oat", "Trim", "Soy"][ix];
+		}
+	}
+
+	display = ``;
+
+	for (coffee of preOrderedCoffees) {
+		
+		/*
+		0: timestamp
+		1: ORDER DATE
+		2: ORDER TIME
+		3: NAME
+		4: ITEM
+		5: ITEM SIZE
+		6: MILK TYPE
+		7: SYRUP TYPE
+		8: SUGAR COUNT
+		9: ICED
+		*/
+
+
+		tempBlock = `
+		<p onclick="completePreorder(${preOrderedCoffees.indexOf(coffee)})" id="preorder${preOrderedCoffees.indexOf(coffee)}" class="order-block" style="background: ${donePreorders[preOrderedCoffees.indexOf(coffee)] ? "#A5D6A7" : "white"}; border-radius: 0.4vw; padding: 0.4vw; margin-top: 0.8vw; margin-bottom: 0.8vw;"><span style="font-weight: 900; margin-left: 0.5vw; margin-right: 1.4vw;">${(coffee[5]) == "Large" ? "L" : "R"}</span>${coffee[4]}
+		`
+
+		tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Name: ${coffee[3]}</span>`
+		
+		
+		if (coffee.length >= 7 && coffee[6] != 0) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Milk: ${coffee[6]}</span>`
+		}
+
+		if (coffee.length >= 8 && coffee[7] != "") {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Syrup: ${coffee[7]}</span>`
+		}
+
+		
+		if (coffee.length >= 9 && (coffee[8] != 0 || coffee[8] != "")) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Sugars: ${[coffee[8]]}</span>`
+		}
+		
+		
+		
+		
+		tempBlock += `</p>`
+
+		display += tempBlock;
+
+		document.getElementById("pre-order-list").innerHTML = display;
+	}
+} 
+
+function completePreorder(index) {
+	donePreorders[index] = !donePreorders[index]
+	let order = "preorder" + index;
+
+	document.getElementById(order).style.background = donePreorders[index] ? "#A5D6A7" : "white";
+}
+
+
+
 
 
 function getOrderSubText() {
@@ -413,6 +496,13 @@ function updCurTransList() {
 */
 }
 
+
+
+
+
+
+
+
 function completeOrder(idx) {
 	modal.style.display = "flex"
 
@@ -441,6 +531,22 @@ function completeOrder(idx) {
 	}
 	*/
 }
+
+function showPreOrders() {
+	document.getElementById("preorders-button").addEventListener("click", () => {
+		document.getElementById("pre-orders").style.display = "flex";
+		document.getElementById("orders").style.display = "none"
+	})
+}
+
+
+function showNormalOrders() {
+	document.getElementById("preorders-return-button").addEventListener("click", () => {
+		document.getElementById("pre-orders").style.display = "none";
+		document.getElementById("orders").style.display = "flex"
+	})
+}
+
 
 
 function endShift() {
@@ -492,8 +598,11 @@ window.addEventListener("load", () => {
 	}
 
 	endShift();
-
 	confirmCancelEnd();
+	showPreOrders();
+	showNormalOrders();
+
+	
 
 	// for (button of document.getElementsByClassName("dialog-button")) {
 	// 	console.log(button);
