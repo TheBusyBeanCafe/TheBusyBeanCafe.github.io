@@ -1,5 +1,5 @@
-const API_SHIFT_URL = "https://thebusybeancafeapi.azurewebsites.net/shifts"
-// const API_SHIFT_URL = "http://127.0.0.1:5000/shifts";
+// const API_SHIFT_URL = "https://thebusybeancafeapi.azurewebsites.net/shifts"
+const API_SHIFT_URL = "http://127.0.0.1:5000/shifts";
 
 function getCurrentDate() {
 
@@ -15,6 +15,8 @@ async function getIntroText(url) {
 		var currentDate = new Date();
 		var hour = currentDate.getHours();
 		var day = currentDate.getDay();
+
+		// hour = 13;
 
 		var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]
 		
@@ -41,6 +43,8 @@ async function getIntroText(url) {
 	var hour = currentDate.getHours();
 	var day = currentDate.getDay();
 	
+	// hour = 13;
+
 	var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]
 	
 

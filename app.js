@@ -1,5 +1,5 @@
-const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
-// const API_URL = "http://127.0.0.1:5000/";
+// const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
+const API_URL = "http://127.0.0.1:5000/";
 
 
 
@@ -9,7 +9,7 @@ var menu, drink_addons, modal, pass, passmodal, g_api_key, sheets_total_row;
 
 var sugarCount = 0;
 let orderedCoffees = [];
-var preOrderedCoffees = [];
+var topc = [];
 
 var donePreorders = [];
 
@@ -25,6 +25,20 @@ async function updateSheetTotalRows() {
 	var json = await response.json();
 	sheets_total_row = json.sheets[0].properties.gridProperties.rowCount;
 }
+
+/*
+	0: (IGNORE) timestamp
+	1: ORDER NAME
+	2: ORDER DATE
+	3: ORDER TIME (morning/lunch)
+	4: MORNING PICKUP TIME
+	5: LUNCH PICKUP TIME
+	6: COFFEE
+	7: SIZE
+	8: MILKS
+	9: SYRUPS
+	10: SUGARS
+*/
 
 
 async function donepwclicked() {
@@ -47,84 +61,79 @@ async function donepwclicked() {
 		updateSheetTotalRows()
 
 		setInterval(async () => {
-			const response2 = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE/values/A2:I' + sheets_total_row + '?key=' + g_api_key)
+			const response2 = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE/values/A2:K' + sheets_total_row + '?key=' + g_api_key)
 			var json = await response2.json();
 
 
-			preOrderedCoffees = json.values;
+			const todayDate = new Date();
 
-			console.log(preOrderedCoffees.length)
-			console.log(donePreorders.length)
+			let currentShift = function(date) {
+				let hour = date.getHours;
+				if (hour >= 7 && hour <= 9) {
+					return "Morning";
+				} else if (hour >= 12 && hour <= 14) {
+					return "Lunch";
+				}
+				return "";
+			}
 
-			if (preOrderedCoffees.length > donePreorders.length) {
-				let difference = (preOrderedCoffees.length - donePreorders.length);
+			currentShift = "Lunch";
 
-				console.log("difference")
-				console.log(difference)
+			console.log(json.values)
 
+			topc = json.values.filter(x => ((new Date(x[x[2] == "" ? 0 : 2])).setHours(0, 0, 0, 0).valueOf() === todayDate.setHours(0, 0, 0, 0).valueOf()) && x[3] == currentShift)
+
+			console.log(topc)
+
+
+
+			if (topc.length > donePreorders.length) {
+				let difference = (topc.length - donePreorders.length);
+
+				
 				for (var i = 0; i < difference; i++) {
 					donePreorders.push(false)
 				}
 			}
 
 
-			console.log(preOrderedCoffees);
-			console.log(donePreorders)
-
 			updPreOrderList();
 
 
 		}, 10 * 1000);
-		console.log(sheets_total_row)
-		console.log("right pass")
+		// console.log(sheets_total_row)
+		// console.log("right pass")
 	}
 }
 
 function updPreOrderList() {
-	function getMilkType(ix) {
-		if (ix==0) {
-			return "";
-		} else {
-			return "→ Milk: " + ["Full", "Lite", "Almond", "Oat", "Trim", "Soy"][ix];
-		}
-	}
+	let display = ``;
 
-	display = ``;
+	const ORDER_SUBTEXT = `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">`
 
-	for (coffee of preOrderedCoffees) {
-		
-		/*
-		0: timestamp
-		1: ORDER DATE
-		2: ORDER TIME
-		3: NAME
-		4: ITEM
-		5: ITEM SIZE
-		6: MILK TYPE
-		7: SYRUP TYPE
-		8: SUGAR COUNT
-		9: ICED
-		*/
-
-
+	for (coffee of topc) {
 		tempBlock = `
-		<p onclick="completePreorder(${preOrderedCoffees.indexOf(coffee)})" id="preorder${preOrderedCoffees.indexOf(coffee)}" class="order-block" style="background: ${donePreorders[preOrderedCoffees.indexOf(coffee)] ? "#A5D6A7" : "white"}; border-radius: 0.4vw; padding: 0.4vw; margin-top: 0.8vw; margin-bottom: 0.8vw;"><span style="font-weight: 900; margin-left: 0.5vw; margin-right: 1.4vw;">${(coffee[5]) == "Large" ? "L" : "R"}</span>${coffee[4]}
+		<p onclick="completePreorder(${topc.indexOf(coffee)})" id="preorder${topc.indexOf(coffee)}" class="order-block" style="background: ${donePreorders[topc.indexOf(coffee)] ? "#A5D6A7" : "white"}; word-break: break-all; border-radius: 0.4vw; padding: 0.4vw; margin-top: 0.8vw; margin-bottom: 0.8vw;"><span style="font-weight: 900; margin-left: 0.5vw; margin-right: 1.4vw;">${(coffee[5]) == "Large" ? "L" : "R"}</span>${coffee[6]}
 		`
 
-		tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Name: ${coffee[3]}</span>`
+		/* ORDER NAME */
+		tempBlock += (ORDER_SUBTEXT + `→ Name: ${coffee[1]}</span>`);
+		tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; color: #1976d2; margin-top: 0vw; margin-bottom: 0.5vw;">→ Pickup Time: ${coffee[coffee[3] == "Morning" ? 4 : 5]}</span>`
 		
-		
-		if (coffee.length >= 7 && coffee[6] != 0) {
-			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Milk: ${coffee[6]}</span>`
+		/* ADDITIONAL INFO */
+		// MILK
+		if (coffee.length >= 9 && coffee[8] != 0) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Milk: ${coffee[8]}</span>`
 		}
 
-		if (coffee.length >= 8 && coffee[7] != "") {
-			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Syrup: ${coffee[7]}</span>`
+		// SYRUP
+		if (coffee.length >= 10 && coffee[9] != "") {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Syrup: ${coffee[9]}</span>`
 		}
 
-		
-		if (coffee.length >= 9 && (coffee[8] != 0 || coffee[8] != "")) {
-			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Sugars: ${[coffee[8]]}</span>`
+		// SUGARS
+		if (coffee.length >= 11 && (coffee[10] != 0 || coffee[10] != "")) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Sugars: ${[coffee[10]]}</span>`
 		}
 		
 		
@@ -153,6 +162,10 @@ function getOrderSubText() {
 	var currentDate = new Date();
 	var hour = currentDate.getHours();
 	var day = currentDate.getDay();
+
+
+	hour = 13;
+
 	
 	/* ****************** */
 
@@ -589,6 +602,7 @@ window.addEventListener("load", () => {
 
 
 	document.getElementById("order-sub").innerHTML = getOrderSubText();
+	document.getElementById("preorder-sub").innerHTML = getOrderSubText();
 	
 	
 
