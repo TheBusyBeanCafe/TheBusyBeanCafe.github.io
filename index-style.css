@@ -1,0 +1,121 @@
+html, body {
+	margin: 0;
+}
+
+
+body {
+	background-color: #DFC6A9;
+}
+
+
+h1 {
+	color: black;
+	margin: 0px;
+	text-align: left;
+	padding-left: 5vw;
+	padding-top: 14vh;
+	font-family: visbyround-regular;
+	font-size: 4.5vw;
+}
+
+
+.stats-text {
+	margin: 0px;
+	position: relative;
+	text-align: center;
+	top: 40%;
+	transform: translate(0, -2vw);
+	font-size: 4vw;
+	font-family: visbyround-medium;
+}
+
+.shift-heading {
+	margin: 0px;
+	position: relative;
+	text-align: left;
+	padding-left: 30px;
+	top: 40%;
+	font-size: 4.4vw;
+	font-family: visbyround-medium;
+}
+
+.shift-sub {
+	margin: 0px;
+	position: relative;
+	text-align: left;
+	padding-left: 30px;
+	top: 40%;
+	font-size: 2vw;
+	font-family: visbyround-medium;
+	color: #777;
+
+}
+
+.stats-rectangle {
+	margin-left: 5vw;
+	margin-top: 3vh;
+	width: 26vw;
+	height: 52vh;
+	border-radius: 18px;
+	background-color: #F3F3F3;
+	box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.15);
+}
+
+.shift-rectangle {
+	margin-right: 5vw;
+	margin-top: 3vh;
+	width: 61vw;
+	height: 52vh;
+	border-radius: 18px;
+	background-image: url("./images/coffee.png");
+	background-size: 120%;
+	background-color:  #F3F3F3;
+	box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.15);
+}
+
+.arrow {
+	margin: 0px;
+	padding: 0px;
+
+	position: relative;
+	display: block;
+
+
+	float: right;
+	top: 30%;
+	margin-right: 2vw;
+	
+}
+
+
+.stats-rectangle {
+	width: 26%;
+	float: left;
+}
+
+.shift-rectangle {
+	width: 61%;
+	float: right;
+}
+
+
+@font-face {
+	font-family: visbyround-light;
+	src: url(./fonts/VisbyRoundCF-Light.woff2)
+}
+
+@font-face {
+	font-family: visbyround-regular;
+	src: url(./fonts/VisbyRoundCF-Regular.woff2)
+}
+
+@font-face {
+	font-family: visbyround-medium;
+	src: url(./fonts/VisbyRoundCF-Medium.woff2)
+}
+
+@font-face {
+	font-family: visbyround-bold;
+	src: url(./fonts/VisbyRoundCF-Bold.woff2)
+}
+

@@ -1,0 +1,635 @@
+// const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
+const API_URL = "http://127.0.0.1:5000/";
+
+
+
+
+
+var menu, drink_addons, modal, pass, passmodal, g_api_key, sheets_total_row;
+
+var sugarCount = 0;
+let orderedCoffees = [];
+var topc = [];
+
+var donePreorders = [];
+
+
+function getPass() {
+	passmodal = document.getElementById("pass-modal");
+	passmodal.style.display = "flex"
+}
+
+
+async function updateSheetTotalRows() {
+	const response = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE?key=' + g_api_key)
+	var json = await response.json();
+	sheets_total_row = json.sheets[0].properties.gridProperties.rowCount;
+}
+
+/*
+	0: (IGNORE) timestamp
+	1: ORDER NAME
+	2: ORDER DATE
+	3: ORDER TIME (morning/lunch)
+	4: MORNING PICKUP TIME
+	5: LUNCH PICKUP TIME
+	6: COFFEE
+	7: SIZE
+	8: MILKS
+	9: SYRUPS
+	10: SUGARS
+*/
+
+
+async function donepwclicked() {
+	pass = btoa(document.getElementById("password").value)
+	var res = await getMenuItems(API_URL + "menu")
+	if ( res === false) {
+		console.log("wrong pass")
+	} else {
+		passmodal.style.display = "none"
+		const response = await fetch(API_URL + "g_api_key",
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Basic ' + pass
+				}
+			});
+		g_api_key = await response.json()
+
+
+		updateSheetTotalRows()
+
+		setInterval(async () => {
+			const response2 = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE/values/A2:K' + sheets_total_row + '?key=' + g_api_key)
+			var json = await response2.json();
+
+
+			const todayDate = new Date();
+
+			let currentShift = function(date) {
+				let hour = date.getHours;
+				if (hour >= 7 && hour <= 9) {
+					return "Morning";
+				} else if (hour >= 12 && hour <= 14) {
+					return "Lunch";
+				}
+				return "";
+			}
+
+			currentShift = "Lunch";
+
+			console.log(json.values)
+
+			topc = json.values.filter(x => ((new Date(x[x[2] == "" ? 0 : 2])).setHours(0, 0, 0, 0).valueOf() === todayDate.setHours(0, 0, 0, 0).valueOf()) && x[3] == currentShift)
+
+			console.log(topc)
+
+
+
+			if (topc.length > donePreorders.length) {
+				let difference = (topc.length - donePreorders.length);
+
+				
+				for (var i = 0; i < difference; i++) {
+					donePreorders.push(false)
+				}
+			}
+
+
+			updPreOrderList();
+
+
+		}, 10 * 1000);
+		// console.log(sheets_total_row)
+		// console.log("right pass")
+	}
+}
+
+function updPreOrderList() {
+	let display = ``;
+
+	const ORDER_SUBTEXT = `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">`
+
+	for (coffee of topc) {
+		tempBlock = `
+		<p onclick="completePreorder(${topc.indexOf(coffee)})" id="preorder${topc.indexOf(coffee)}" class="order-block" style="background: ${donePreorders[topc.indexOf(coffee)] ? "#A5D6A7" : "white"}; word-break: break-all; border-radius: 0.4vw; padding: 0.4vw; margin-top: 0.8vw; margin-bottom: 0.8vw;"><span style="font-weight: 900; margin-left: 0.5vw; margin-right: 1.4vw;">${(coffee[5]) == "Large" ? "L" : "R"}</span>${coffee[6]}
+		`
+
+		/* ORDER NAME */
+		tempBlock += (ORDER_SUBTEXT + `→ Name: ${coffee[1]}</span>`);
+		tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; color: #1976d2; margin-top: 0vw; margin-bottom: 0.5vw;">→ Pickup Time: ${coffee[coffee[3] == "Morning" ? 4 : 5]}</span>`
+		
+		/* ADDITIONAL INFO */
+		// MILK
+		if (coffee.length >= 9 && coffee[8] != 0) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Milk: ${coffee[8]}</span>`
+		}
+
+		// SYRUP
+		if (coffee.length >= 10 && coffee[9] != "") {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Syrup: ${coffee[9]}</span>`
+		}
+
+		// SUGARS
+		if (coffee.length >= 11 && (coffee[10] != 0 || coffee[10] != "")) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Sugars: ${[coffee[10]]}</span>`
+		}
+		
+		
+		
+		
+		tempBlock += `</p>`
+
+		display += tempBlock;
+
+		document.getElementById("pre-order-list").innerHTML = display;
+	}
+} 
+
+function completePreorder(index) {
+	donePreorders[index] = !donePreorders[index]
+	let order = "preorder" + index;
+
+	document.getElementById(order).style.background = donePreorders[index] ? "#A5D6A7" : "white";
+}
+
+
+
+
+
+function getOrderSubText() {
+	var currentDate = new Date();
+	var hour = currentDate.getHours();
+	var day = currentDate.getDay();
+
+
+	hour = 13;
+
+	
+	/* ****************** */
+
+	/*
+	day = 4;
+	hour = 8;
+	*/
+	
+	var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]
+	
+	
+	function getShiftName(hour) {
+		if (hour >= 7 && hour <= 9) {
+			return ", Morning Shift";
+		} else if (hour >= 12 && hour <= 14) {
+			return ", Lunch Shift";
+		} else {
+			return ", (No Shift Selected)";
+		}
+	}
+
+	
+	return weekday + getShiftName(hour);
+}
+
+function postCoffee(coffee) {
+	fetch(API_URL + "transactions", {
+		method: "POST",
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Basic ' + pass
+		},
+		body: JSON.stringify(coffee)
+	})
+}
+
+
+
+function diagButtonClick(elem) {
+	var type = elem.getAttribute("data-button-group");
+	[].slice.call(document.getElementById("drink-options-content")
+		.querySelectorAll("[data-button-group='" + type + "'].dialog-button-selected")).forEach(function(element) {
+			element.classList.remove("dialog-button-selected")
+		})
+	elem.classList.add("dialog-button-selected")
+}
+
+
+var dialogShownObj
+
+
+function doneclicked() {
+	modal.style.display = 'none';
+	var choice;
+
+	var newobj = dialogShownObj["id"] == null;
+
+
+	[].slice.call(document.getElementById("drink-options-content")
+		.querySelectorAll("[data-button-group='milk']"))
+		.every( (el, idx) => {
+			if (el.classList.contains("dialog-button-selected")) {
+				choice = idx
+				return false
+			}
+			return true
+		}
+	)
+	
+	dialogShownObj["date"] = Date.now()
+	
+	dialogShownObj["milk"] = choice;
+
+	dialogShownObj["large"] = document.getElementById("drink-options-content").querySelectorAll("[data-button-group='size']")[1].classList.contains("dialog-button-selected");
+
+	dialogShownObj["sugar"] = sugarCount;
+
+	sugarCount = 0;
+
+	document.getElementById("sugar-counter-minus").style.display = "none";
+	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S</h2>`;
+
+
+	[].slice.call(document.getElementById("drink-options-content")
+		.querySelectorAll("[data-button-group].dialog-button-selected")).forEach(function(element) {
+			element.classList.remove("dialog-button-selected")
+		});
+
+
+	[].slice.call(document.getElementById("drink-options-content")
+		.querySelectorAll("[data-button-default='true'")).forEach(function(element) {
+			element.classList.add("dialog-button-selected")
+		});
+
+
+
+	if (newobj) {
+		dialogShownObj["id"] = uuidv4()
+		orderedCoffees.push(dialogShownObj);
+
+		fetch(API_URL + "transactions", {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Basic ' + pass
+			},
+			body: JSON.stringify(dialogShownObj)
+		});
+	} else {
+		fetch(API_URL + "transaction/" + dialogShownObj["id"], {
+			method: "PUT",
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Basic ' + pass
+			},
+			body: JSON.stringify(dialogShownObj)
+		});
+	}
+
+	console.log(dialogShownObj)
+
+	updCurTransList()
+}
+
+
+
+
+function coffeeClicked(idx) {
+	item = menu[idx]
+	if (item.is_drink) {
+		modal.style.display = "flex"
+
+		dialogShownObj = {
+			index: idx,
+			count: 1, // TODO also do post
+			sugar: 0,
+			is_done: false
+		};
+		
+		[].slice.call(document.getElementsByClassName("hide-when-no-milk")).forEach(function(elem) {
+			elem.style.display = item.has_milk ? "flex" : "none"
+		});
+
+		document.getElementById("dialog-drink-title").innerHTML = getCurrentOrderItem(idx);
+		document.getElementById("add-or-edit-title").innerHTML = "New Order"
+    } else {
+		orderedCoffees.push({index: idx, date: Date.now()});
+		updCurTransList()
+	}
+}
+
+function sugarClicked() {
+	sugarCount += 1
+	
+	console.log(sugarCount)
+
+	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S<span style="font-size: 2.4vh">x${sugarCount}</span></h2>`
+
+	if (sugarCount != 0) {
+		document.getElementById("sugar-counter-minus").style.display = "block";
+	}
+}
+
+function sugarMinused() {
+	sugarCount = Math.max(sugarCount-1, 0)
+	
+	console.log(sugarCount)
+
+	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S<span style="font-size: 2.4vh">x${sugarCount}</span></h2>`
+
+	if (sugarCount == 0) {
+		document.getElementById("sugar-counter-minus").style.display = "none";
+		document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S</h2>`
+	}
+}
+
+
+function getCurrentDate() {
+	var currentDate = new Date();
+	var date = currentDate.getHours();
+	
+	if (date > 7 && date < 9) {
+		return "Good Morning, "
+	} else if (date > 12 && date < 2) {
+		return "Good Afternoon, "
+	} else {
+		return "Hello!"
+	}
+}
+
+function getCurrentName() {
+	data = asyncFetch(API_URL + "shift");
+}
+
+async function asyncFetch(url) {
+	const response = await fetch(url);
+	json = await response.json()
+	
+	return json
+}
+
+function getIntroText() {
+	var introText = "";
+	introText += getCurrentDate()
+	
+	getCurrentName();
+}
+
+async function getMenuItems(url) {
+	const response = await fetch(url,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Basic ' + pass
+			}
+		});
+	if (response.status == 401) {
+		return false
+	}
+	json = await response.json();
+	menu = json["menu"]
+	drink_addons = json["drink_addons"]
+	
+	displayData(menu);
+}
+
+function displayData(data) {
+	function addClickListener() {
+		for (let i = 0; i <= data.length; i++) {
+			if (i == 8) { // cookie
+				console.log("cookie");
+			} else if (i == 9) {  //extras menu
+				console.log("extras menu");
+			} else {
+				let coffeeButton = document.getElementById("hstack-item" + i);
+				
+				coffeeButton.style.cursor = 'pointer';
+				coffeeButton.onclick = function () {
+					coffeeClicked(i)
+				}
+			}
+		}
+	}
+	
+	function setFunc() {
+		data.forEach(function(element, index) { 
+			let itemName = "hstack-item" + index;
+			
+			
+			if (index > 1 && index != 8 && index != 9) {
+				document.getElementById(itemName).innerHTML = `
+				<p class="button-title-small">${element.short_name}</p>
+				<p class="button-sub-small">${element.long_name}</p>
+				`
+			} else if (index == 8) {
+				document.getElementById(itemName).innerHTML = `
+				<p class="button-title-big">${element.short_name}</p>
+				<p class="button-sub-big">${element.long_name}</p>
+				`
+				
+				
+				itemName = "hstack-item" + (index + 1);
+				document.getElementById(itemName).innerHTML = `
+				<p class="button-sub-big">Other</p>
+				`
+				
+			} else {
+				document.getElementById(itemName).innerHTML = `
+				<p class="button-title-big">${element.short_name}</p>
+				<p class="button-sub-big">${element.long_name}</p>
+				`
+			}
+		})
+	}
+	
+	
+	if ( document.readyState == 'complete' ) {
+		setFunc();
+		addClickListener();
+	} else {
+		addEventListener("load", () => {
+			setFunc();
+			addClickListener();
+		})
+	}
+}
+
+
+function getCurrentOrderItem(index) {
+	return menu[index].long_name;
+}
+
+function updCurTransList() {
+	var display = '';
+	//var total = 0;
+	
+	function getMilkType(ix) {
+		if (ix==0) {
+			return "";
+		} else {
+			return "→ Milk: " + ["Full", "Lite", "Almond", "Oat", "Trim", "Soy"][ix];
+		}
+	}
+
+
+	orderedCoffees.forEach(function(element, index) { 
+		tempBlock = `
+		<p onclick="completeOrder(${index})" id="order${index}" class="order-block" style="background: white; border-radius: 0.4vw; padding: 0.4vw; margin-top: 0.8vw; margin-bottom: 0.8vw;"><span style="font-weight: 900; margin-left: 0.5vw; margin-right: 1.4vw;">${(element.large) ? "L" : "R"}</span>${menu[element.index].long_name}
+		`;
+		
+		
+		if (getMilkType(element.milk)!=0) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">${getMilkType(element.milk)}</span>`
+		} 
+
+		console.log(element.milk);
+		console.log(element.sugar);
+
+		if (element.sugar != 0) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Sugars: ${element.sugar}</span>`
+		}
+
+		tempBlock += `</p>`;
+
+
+		display += tempBlock;
+		
+	});
+
+	
+	document.getElementById("order-list").innerHTML = display;
+
+/*
+		let elementId = "order" + element.index;
+
+
+		let tempOrderBlock = document.getElementById(elementId);
+		tempOrderBlock.addEventListener("click", () => {
+			tempOrderBlock.style.background="green";
+		})
+*/
+}
+
+
+
+
+
+
+
+
+function completeOrder(idx) {
+	modal.style.display = "flex"
+
+	dialogShownObj = orderedCoffees[idx];
+
+	document.getElementById("dialog-drink-title").innerHTML = getCurrentOrderItem(idx);
+	document.getElementById("add-or-edit-title").innerHTML = "Edit Order";
+
+	[].slice.call(document.getElementById("drink-options-content")
+		.querySelectorAll("[data-button-group].dialog-button-selected")).forEach(function(element) {
+			element.classList.remove("dialog-button-selected")
+		});
+
+	document.getElementById("drink-options-content").querySelectorAll("[data-button-group='milk']")[dialogShownObj.milk].classList.add("dialog-button-selected")
+	document.getElementById("drink-options-content").querySelectorAll("[data-button-group='size']")[ + dialogShownObj.large].classList.add("dialog-button-selected");
+
+	
+	/*
+	if (el.is_done) {
+		el.style.background="white";
+	} else {
+		if (el.style.background.split(" ")[0] == "white") {
+			el.is_done = true;
+			el.style.background="#A5D6A7";
+		}
+	}
+	*/
+}
+
+function showPreOrders() {
+	document.getElementById("preorders-button").addEventListener("click", () => {
+		document.getElementById("pre-orders").style.display = "flex";
+		document.getElementById("orders").style.display = "none"
+	})
+}
+
+
+function showNormalOrders() {
+	document.getElementById("preorders-return-button").addEventListener("click", () => {
+		document.getElementById("pre-orders").style.display = "none";
+		document.getElementById("orders").style.display = "flex"
+	})
+}
+
+
+
+function endShift() {
+	document.getElementById("endshift-button").addEventListener("click", () => {
+		
+
+		document.getElementById("endshift-button").style.display = "none";
+		document.getElementById("preorders-button").style.display = "none";
+
+		document.getElementById("confirm-endshift-button").style.display = "block";
+		document.getElementById("cancel-endshift-button").style.display = "block";
+
+	})
+}
+
+function confirmCancelEnd() {
+	document.getElementById("confirm-endshift-button").addEventListener("click", () => {
+		alert("shift ended!");
+		window.location.href = "./index.html";
+	})
+
+	document.getElementById("cancel-endshift-button").addEventListener("click", () => {
+		document.getElementById("endshift-button").style.display = "block";
+		document.getElementById("preorders-button").style.display = "block";
+
+		document.getElementById("confirm-endshift-button").style.display = "none";
+		document.getElementById("cancel-endshift-button").style.display = "none";
+	})
+}
+
+window.addEventListener("load", () => {
+	if (pass == null) {
+		getPass()
+	}
+
+
+	getCurrentDate();
+	modal = document.getElementById("drink-options-modal");
+	
+
+
+	document.getElementById("order-sub").innerHTML = getOrderSubText();
+	document.getElementById("preorder-sub").innerHTML = getOrderSubText();
+	
+	
+
+	let buttons = document.getElementsByClassName("bar-button")
+	for (button of buttons) {
+		button.style.cursor = "pointer";
+	}
+
+	endShift();
+	confirmCancelEnd();
+	showPreOrders();
+	showNormalOrders();
+
+	
+
+	// for (button of document.getElementsByClassName("dialog-button")) {
+	// 	console.log(button);
+
+	// 	button.classList.remove("hover-effect");
+	// }
+	
+	
+
+});
+
+window.onclick = function(event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+	}
+}
