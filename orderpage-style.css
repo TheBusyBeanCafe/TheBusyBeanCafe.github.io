@@ -535,7 +535,7 @@ input[type=password] {
 }
 
 
-#mhst-2-vstack {
+.mhst-2-vstack {
 	display: flex;
 	flex-direction: column;
 
@@ -559,7 +559,7 @@ input[type=password] {
 
 
 
-#half-size {
+.half-size {
 	flex: 1;
 	flex-grow: 1;
 

@@ -205,12 +205,19 @@ function postCoffee(coffee) {
 
 
 function diagButtonClick(elem) {
+	var optional = elem.getAttribute("data-button-optional")
+	console.log(optional)
 	var type = elem.getAttribute("data-button-group");
-	[].slice.call(document.getElementById("drink-options-content")
-		.querySelectorAll("[data-button-group='" + type + "'].dialog-button-selected")).forEach(function(element) {
-			element.classList.remove("dialog-button-selected")
-		})
-	elem.classList.add("dialog-button-selected")
+	if (optional && elem.classList.contains("dialog-button-selected")) {
+		elem.classList.remove("dialog-button-selected")
+	} else {
+		[].slice.call(document.getElementById("drink-options-content")
+			.querySelectorAll("[data-button-group='" + type + "'].dialog-button-selected")).forEach(function(element) {
+				element.classList.remove("dialog-button-selected")
+			})
+
+		elem.classList.add("dialog-button-selected")
+	}
 }
 
 
@@ -242,6 +249,21 @@ function doneclicked() {
 	dialogShownObj["large"] = document.getElementById("drink-options-content").querySelectorAll("[data-button-group='size']")[1].classList.contains("dialog-button-selected");
 
 	dialogShownObj["sugar"] = sugarCount;
+
+	var payelem = document.getElementById("modal-hstack-small2-left").querySelector("[data-button-group='payment'].dialog-button-selected");
+	if (payelem) {
+		dialogShownObj["payment"] = parseInt(payelem.getAttribute("data-button-value"))
+	} else {
+		dialogShownObj["payment"] = 0
+	}
+
+	var syrupelem = document.getElementById("syrup-container").querySelector("[data-button-group='syrup'].dialog-button-selected");
+	if (syrupelem) {
+		dialogShownObj["syrup"] = parseInt(syrupelem.getAttribute("data-button-value"))
+	} else {
+		dialogShownObj["syrup"] = null
+	}
+	
 
 	sugarCount = 0;
 

@@ -105,8 +105,8 @@
 						</div>
 						
 						<div id="mhst-2-big" class="modal-hstack-item">
-							<div id="mhst-2-vstack" class="modal-hstack-item">
-								<div id="half-size" class="half-size">
+							<div class="modal-hstack-item mhst-2-vstack">
+								<div class="half-size">
 									<button type="button" class="dialog-button" data-button-group="milk" onclick="diagButtonClick(this)">
 										<p class="button-long-name-only">
 											Almond
@@ -115,7 +115,7 @@
 								</div>
 								
 								
-								<div id="half-size" class="half-size">
+								<div class="half-size">
 									<button type="button" class="dialog-button" data-button-group="milk" onclick="diagButtonClick(this)">
 										<p class="button-long-name-only">
 											Oat
@@ -127,8 +127,8 @@
 						
 						
 						<div id="mhst-2-big" class="modal-hstack-item">
-							<div id="mhst-2-vstack" class="modal-hstack-item">
-								<div id="half-size" class="half-size">
+							<div class="modal-hstack-item mhst-2-vstack">
+								<div class="half-size">
 									<button type="button" class="dialog-button" data-button-group="milk" onclick="diagButtonClick(this)">
 										<p class="button-long-name-only">
 											Trim
@@ -137,7 +137,7 @@
 								</div>
 								
 								
-								<div id="half-size" class="half-size">
+								<div class="half-size">
 									<button type="button" class="dialog-button" data-button-group="milk" onclick="diagButtonClick(this)">
 										<p class="button-long-name-only">
 											Soy
@@ -154,9 +154,9 @@
 
 					<div id="modal-hstack-small1-right" class="modal-hstack">
 						<div id="mhst-2-big" class="modal-hstack-item">
-							<div id="mhst-2-vstack" class="modal-hstack-item">
-								<div id="half-size" class="half-size">
-									<button type="button" class="dialog-button dialog-button-counter">
+							<div id="syrup-container" class="modal-hstack-item mhst-2-vstack">
+								<div class="half-size">
+									<button type="button" class="dialog-button dialog-button-counter" data-button-group="syrup" data-button-value="0" data-button-optional="true" onclick="diagButtonClick(this)">
 										<p class="button-long-name-only">
 											Vanilla
 											<img class="counter-button-minus" src="images/minus.png">
@@ -165,8 +165,8 @@
 								</div>
 								
 								
-								<div id="half-size" class="half-size">
-									<button type="button" class="dialog-button dialog-button-counter">
+								<div class="half-size">
+									<button type="button" class="dialog-button dialog-button-counter" data-button-group="syrup" data-button-value="1" data-button-optional="true" onclick="diagButtonClick(this)">
 										<p class="button-long-name-only">
 											Caramel
 										</p>
@@ -185,7 +185,7 @@
 				<div id="modal-hstack-small2" class="modal-hstack">
 					<div id="modal-hstack-small2-left" class="modal-hstack">
 						<div id="mhst-3-big" class="modal-hstack-item">
-							<button type="button" class="dialog-button">
+							<button type="button" class="dialog-button" data-button-group="payment" data-button-value="1" data-button-optional="true" onclick="diagButtonClick(this)">
 								<h2 class="button-short-name-s">
 									E
 								</h2>
@@ -197,12 +197,24 @@
 						
 
 						<div id="mhst-3-big" class="modal-hstack-item">
-							<button type="button" class="dialog-button">
+							<button type="button" class="dialog-button" data-button-group="payment" data-button-value="2" data-button-optional="true" onclick="diagButtonClick(this)">
 								<h2 class="button-short-name-s">
 									L
 								</h2>
 								<p class="button-long-name-s">
 									Loyalty
+								</p>
+							</button>
+						</div>
+
+
+						<div id="mhst-3-big" class="modal-hstack-item">
+							<button type="button" class="dialog-button" data-button-group="payment" data-button-value="3" data-button-optional="true" onclick="diagButtonClick(this)">
+								<h2 class="button-short-name-s">
+									F
+								</h2>
+								<p class="button-long-name-s">
+									Free
 								</p>
 							</button>
 						</div>
