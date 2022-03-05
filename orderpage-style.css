@@ -600,7 +600,7 @@ input[type=password] {
 	background: rgba(255, 236, 179, 0.2);
 } */
 
-.dialog-button:active {
+#modal-hstack-small1-left[disabled="false"] .dialog-button:active {
 	transform: scale(0.97);
 }
 

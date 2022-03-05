@@ -279,21 +279,7 @@ function doneclicked() {
 
 	sugarCount = 0;
 
-	document.getElementById("sugar-counter-minus").style.display = "none";
-	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S</h2>`;
-
-
-	[].slice.call(document.getElementById("drink-options-content")
-		.querySelectorAll("[data-button-group].dialog-button-selected")).forEach(function(element) {
-			element.classList.remove("dialog-button-selected")
-		});
-
-
-	[].slice.call(document.getElementById("drink-options-content")
-		.querySelectorAll("[data-button-default='true'")).forEach(function(element) {
-			element.classList.add("dialog-button-selected")
-		});
-
+	resetModal();
 
 
 	if (newobj) {
@@ -681,8 +667,26 @@ window.addEventListener("load", () => {
 
 });
 
+function resetModal() {
+	document.getElementById("sugar-counter-minus").style.display = "none";
+	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S</h2>`;
+
+
+	[].slice.call(document.getElementById("drink-options-content")
+		.querySelectorAll("[data-button-group].dialog-button-selected")).forEach(function(element) {
+			element.classList.remove("dialog-button-selected")
+		});
+
+
+	[].slice.call(document.getElementById("drink-options-content")
+		.querySelectorAll("[data-button-default='true'")).forEach(function(element) {
+			element.classList.add("dialog-button-selected")
+		});
+}
+
 window.onclick = function(event) {
 	if (event.target == modal) {
 		modal.style.display = "none";
+		resetModal();
 	}
 }
