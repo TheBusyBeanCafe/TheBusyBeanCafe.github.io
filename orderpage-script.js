@@ -79,7 +79,6 @@ async function donepwclicked() {
 				return "";
 			}
 
-			currentShift = "Lunch";
 
 			console.log(json.values)
 
@@ -164,9 +163,6 @@ function getOrderSubText() {
 	var currentDate = new Date();
 	var hour = currentDate.getHours();
 	var day = currentDate.getDay();
-
-
-	hour = 13;
 
 	
 	/* ****************** */
@@ -508,6 +504,14 @@ function updCurTransList() {
 		}
 	}
 
+	function getSyrupType(syrup) {
+		if (syrup === null) {
+			return "";
+		} else {
+			return "→ Syrup: " + ["Vanilla", "Caramel"][syrup];
+		}
+	}
+
 
 	orderedCoffees.forEach(function(element, index) { 
 		tempBlock = `
@@ -519,8 +523,9 @@ function updCurTransList() {
 			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">${getMilkType(element.milk)}</span>`
 		} 
 
-		console.log(element.milk);
-		console.log(element.sugar);
+		if (element.syrup !== null) {
+			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">${getSyrupType(element.syrup)}</span>`
+		} 
 
 		if (element.sugar != 0) {
 			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Sugars: ${element.sugar}</span>`
