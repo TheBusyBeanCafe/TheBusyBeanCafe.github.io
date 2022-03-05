@@ -629,7 +629,7 @@ input[type=password] {
 }
 
 #delete {
-	background: #ff5f52;
+	background: #FF867C;
 	display: none;
 }
 
@@ -682,6 +682,9 @@ input[type=password] {
 	margin-top: -1.5vh;
 }
 
+.done-button {
+	font-size: 5vh;
+}
 
 
 
