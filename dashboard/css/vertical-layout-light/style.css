@@ -31254,7 +31254,7 @@ div.tagsinput span.tag a {
 
 .stats-card-body {
 	width: calc((100vw - 220px)/6);
-	height: 14vh;
+	height: 200px;
 	justify-content: space-between;
 }
 
@@ -31265,7 +31265,7 @@ div.tagsinput span.tag a {
 @media (max-width: 991px) {
 	.stats-card-body {
 		width: calc((100vw)/6);
-		height: 14vh;
+		height: 200px;
 	}
 }
 
@@ -31281,7 +31281,7 @@ div.tagsinput span.tag a {
 	align-items: center;
 	word-wrap: break-word;
 	flex-wrap: nowrap; 
-	height: 10.5vh;
+	height: 150px;
 	padding: 0px;
 	margin: 0px;
 }
