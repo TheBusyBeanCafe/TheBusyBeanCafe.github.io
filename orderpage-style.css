@@ -285,14 +285,14 @@ body {
 	font-size: 1.5vw;
 }
 
-input[type=password]:invalid {
-	outline: none;
-	border: 3px solid red;
-}
-
 input[type=password]:focus {
     outline: none;
 	border: 3px solid #DFC6A9;
+}
+
+input[type=password].pw-invalid {
+	outline: none;
+	border: 3px solid red;
 }
 
 input[type=password] {
@@ -615,10 +615,22 @@ input[type=password] {
 	padding-bottom: 0px;
 }
 
+.dialog-subtitle[disabled="true"] {
+	color: gray;
+}
+
+#modal-hstack-small1-left[disabled="true"] .dialog-button {
+	background: lightgray;
+}
+
 #done {
 	background: #A5D6A7;
 }
 
+#delete {
+	background: #ff5f52;
+	display: none;
+}
 
 
 .button-short-name {

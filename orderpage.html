@@ -79,7 +79,7 @@
 				
 				
 				<div class="subtitle-hstack">
-					<h3 class="dialog-subtitle hide-when-no-milk">Milks</h3>
+					<h3 class="dialog-subtitle" id="milk-subtitle">Milks</h3>
 
 
 					<h3 class="dialog-subtitle">Syrups</h3>
@@ -89,7 +89,7 @@
 				
 				
 				<div id="modal-hstack-small1" class="modal-hstack">
-					<div id="modal-hstack-small1-left" class="modal-hstack hide-when-no-milk">
+					<div id="modal-hstack-small1-left" class="modal-hstack">
 						<div id="mhst-2-big" class="modal-hstack-item">
 							<button type="button" class="dialog-button dialog-button-selected" data-button-default="true" data-button-group="milk" onclick="diagButtonClick(this)">
 								<h2 class="button-short-name-s">R</h2>
@@ -224,6 +224,11 @@
 					
 					
 					<div id="modal-hstack-small2-right" class="modal-hstack">
+						<button type="button" id="delete" class="dialog-button" onclick="deleteclicked()">
+							<h2 class="button-short-name">
+								DELETE
+							</h2>
+						</button>
 						
 						<button type="button" id="done" class="dialog-button" onclick="doneclicked()">
 							<h2 class="button-short-name">

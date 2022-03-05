@@ -46,6 +46,8 @@ async function donepwclicked() {
 	var res = await getMenuItems(API_URL + "menu")
 	if ( res === false) {
 		console.log("wrong pass")
+		document.getElementById("password").value = ''
+		document.getElementById("password").classList.add("pw-invalid")
 	} else {
 		passmodal.style.display = "none"
 		const response = await fetch(API_URL + "g_api_key",
@@ -219,6 +221,20 @@ function diagButtonClick(elem) {
 
 var dialogShownObj
 
+function deleteclicked() {
+	modal.style.display = 'none';
+
+	fetch(API_URL + "transaction/" + dialogShownObj.id, {
+		method: "DELETE",
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Basic ' + pass
+		}
+	});
+	orderedCoffees = orderedCoffees.filter(item => item.id != dialogShownObj.id)
+	updCurTransList()
+}
+
 
 function doneclicked() {
 	modal.style.display = 'none';
@@ -323,12 +339,12 @@ function coffeeClicked(idx) {
 			is_done: false
 		};
 		
-		[].slice.call(document.getElementsByClassName("hide-when-no-milk")).forEach(function(elem) {
-			elem.style.display = item.has_milk ? "flex" : "none"
-		});
+		document.getElementById("milk-subtitle").setAttribute("disabled", !item.has_milk);
+		document.getElementById("modal-hstack-small1-left").setAttribute("disabled", !item.has_milk);
 
 		document.getElementById("dialog-drink-title").innerHTML = getCurrentOrderItem(idx);
 		document.getElementById("add-or-edit-title").innerHTML = "New Order"
+		document.getElementById("delete").style.display = "none";
     } else {
 		orderedCoffees.push({index: idx, date: Date.now()});
 		updCurTransList()
@@ -548,17 +564,27 @@ function completeOrder(idx) {
 
 	dialogShownObj = orderedCoffees[idx];
 
-	document.getElementById("dialog-drink-title").innerHTML = getCurrentOrderItem(idx);
+	document.getElementById("dialog-drink-title").innerHTML = getCurrentOrderItem(dialogShownObj.index);
 	document.getElementById("add-or-edit-title").innerHTML = "Edit Order";
+
+	document.getElementById("delete").style.display = "block";
 
 	[].slice.call(document.getElementById("drink-options-content")
 		.querySelectorAll("[data-button-group].dialog-button-selected")).forEach(function(element) {
 			element.classList.remove("dialog-button-selected")
 		});
 
+	document.getElementById("milk-subtitle").setAttribute("disabled", !menu[dialogShownObj.index].has_milk);
+	document.getElementById("modal-hstack-small1-left").setAttribute("disabled", !menu[dialogShownObj.index].has_milk);
+
 	document.getElementById("drink-options-content").querySelectorAll("[data-button-group='milk']")[dialogShownObj.milk].classList.add("dialog-button-selected")
 	document.getElementById("drink-options-content").querySelectorAll("[data-button-group='size']")[ + dialogShownObj.large].classList.add("dialog-button-selected");
-
+	if (dialogShownObj.syrup !== null ) {
+		document.getElementById("syrup-container").querySelectorAll("[data-button-group='syrup']")[dialogShownObj.syrup].classList.add("dialog-button-selected");
+	}
+	console.log(dialogShownObj.payment)
+	// -1 because 0 is cash
+	document.getElementById("modal-hstack-small2-left").querySelectorAll("[data-button-group='payment']")[dialogShownObj.payment - 1].classList.add("dialog-button-selected");
 	
 	/*
 	if (el.is_done) {
