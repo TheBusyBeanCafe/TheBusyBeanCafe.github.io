@@ -11,7 +11,9 @@ var sugarCount = 0;
 let orderedCoffees = [];
 var topc = [];
 
+var doneOrders = [];
 var donePreorders = [];
+
 
 
 function getPass() {
@@ -146,6 +148,7 @@ function updPreOrderList() {
 
 		document.getElementById("pre-order-list").innerHTML = display;
 	}
+
 } 
 
 function completePreorder(index) {
@@ -280,6 +283,8 @@ function doneclicked() {
 	sugarCount = 0;
 
 	resetModal();
+
+	doneOrders.push(false);
 
 
 	if (newobj) {
@@ -419,6 +424,7 @@ function displayData(data) {
 				console.log("cookie");
 			} else if (i == 9) {  //extras menu
 				console.log("extras menu");
+				
 			} else {
 				let coffeeButton = document.getElementById("hstack-item" + i);
 				
@@ -500,8 +506,15 @@ function updCurTransList() {
 
 
 	orderedCoffees.forEach(function(element, index) { 
+		var orderColour = "white"
+		if (doneOrders[index]) {
+			orderColour = "#A5D6A7"
+		}
+
+		
+
 		tempBlock = `
-		<p onclick="completeOrder(${index})" id="order${index}" class="order-block" style="background: white; border-radius: 0.4vw; padding: 0.4vw; margin-top: 0.8vw; margin-bottom: 0.8vw;"><span style="font-weight: 900; margin-left: 0.5vw; margin-right: 1.4vw;">${(element.large) ? "L" : "R"}</span>${menu[element.index].long_name}
+		<p onclick="completeOrder(${index})" id="order${index}" class="order-block" style="background: ${orderColour}; border-radius: 0.4vw; padding: 0.4vw; margin: 0px; flex-grow: 6;"><span style="font-weight: 900; margin-left: 0.5vw; margin-right: 1.4vw;">${(element.large) ? "L" : "R"}</span>${menu[element.index].long_name}
 		`;
 		
 		
@@ -520,32 +533,58 @@ function updCurTransList() {
 		tempBlock += `</p>`;
 
 
-		display += tempBlock;
+		outerHflex = `
+			<div class="order-hflex">
+				${tempBlock}
+
+				<p onclick="editOrder(${index})" class="mdi mdi-36px mdi-pencil edit-text" style="background: #EBEBEB; margin: 0px; border-radius: 0.4vw; padding: 0.4vw;"></p>
+			</div>
+		`
+
+
+		display += outerHflex;
 		
 	});
 
 	
+	
 	document.getElementById("order-list").innerHTML = display;
 
-/*
-		let elementId = "order" + element.index;
+	// for (var i = 0; i < (orderedCoffees.length); i++) {
+	// 	console.log("RUN")
+	// 	console.log(orderedCoffees.length)
 
+	// 	const orderId = "order" + (i);
 
-		let tempOrderBlock = document.getElementById(elementId);
-		tempOrderBlock.addEventListener("click", () => {
-			tempOrderBlock.style.background="green";
-		})
-*/
+	// 	console.log(orderId);
+
+		
+
+	// 	var coffeeElement = document.getElementById(orderId);
+
+	// 	console.log(coffeeElement);
+
+	// 	coffeeElement.addEventListener("click", completeOrder(i));
+	// 	coffeeElement.addEventListener("long-press", editOrder(i))
+	// }
 }
 
 
 
 
-
-
-
-
 function completeOrder(idx) {
+	doneOrders[idx] = !doneOrders[idx]
+
+	const orderId = "order" + idx
+
+	console.log(orderId);
+
+	document.getElementById(orderId).style.background = (doneOrders[idx] ? "#A5D6A7" : "white");
+}
+
+
+
+function editOrder(idx) {
 	modal.style.display = "flex"
 
 	dialogShownObj = orderedCoffees[idx];
@@ -654,6 +693,8 @@ window.addEventListener("load", () => {
 	confirmCancelEnd();
 	showPreOrders();
 	showNormalOrders();
+
+	
 
 	
 

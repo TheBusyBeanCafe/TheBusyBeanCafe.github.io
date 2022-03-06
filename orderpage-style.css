@@ -250,6 +250,17 @@ body {
 }
 
 
+
+.order-hflex {
+	display: flex;
+	flex-direction: row;
+	gap: 0.8vw;
+	padding: 0px;
+	margin-top: 0.8vw;
+	margin-bottom: 0.8vw;
+}
+
+
 /* MODAL */
 
 .modal-bg {
@@ -403,6 +414,12 @@ input[type=password] {
 	flex-wrap: nowrap;
 	
 	gap: 2vh;
+}
+
+.edit-text {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #modal-hstack-big {
@@ -641,6 +658,8 @@ input[type=password] {
 	margin: 0px;
 	padding: 0px;
 }
+
+
 
 
 
