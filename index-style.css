@@ -18,6 +18,18 @@ h1 {
 	font-size: 4.5vw;
 }
 
+.main-vflex {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100vh;
+}
+
+.top-vflex {
+	display: flex;
+	flex-direction: column;
+}
+
 
 .stats-text {
 	margin: 0px;
@@ -119,3 +131,11 @@ h1 {
 	src: url(./fonts/VisbyRoundCF-Bold.woff2)
 }
 
+.footer {
+	color: #000;
+	font-size: calc(0.812rem - 0.05rem);
+	font-family: "visbyround-light", sans-serif;
+
+	margin-left: 2.45rem;
+	margin-bottom: 30px;
+}
