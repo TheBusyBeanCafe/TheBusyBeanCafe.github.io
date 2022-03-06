@@ -246,18 +246,20 @@ function doneclicked() {
 	var newobj = dialogShownObj["id"] == null;
 
 
-	[].slice.call(document.getElementById("drink-options-content")
-		.querySelectorAll("[data-button-group='milk']"))
-		.every( (el, idx) => {
-			if (el.classList.contains("dialog-button-selected")) {
-				choice = idx
-				return false
-			}
-			return true
-		}
-	)
-	
 	dialogShownObj["date"] = Date.now()
+	
+	if (menu[dialogShownObj.index].has_milk) {
+		[].slice.call(document.getElementById("drink-options-content")
+			.querySelectorAll("[data-button-group='milk']"))
+			.every( (el, idx) => {
+				if (el.classList.contains("dialog-button-selected")) {
+					choice = idx
+					return false
+				}
+				return true
+			}
+		)
+	}
 	
 	dialogShownObj["milk"] = choice;
 
@@ -489,7 +491,7 @@ function updCurTransList() {
 	//var total = 0;
 	
 	function getMilkType(ix) {
-		if (ix==0) {
+		if (ix==0 || ix == null) {
 			return "";
 		} else {
 			return "→ Milk: " + ["Full", "Lite", "Almond", "Oat", "Trim", "Soy"][ix];
@@ -602,7 +604,9 @@ function editOrder(idx) {
 	document.getElementById("milk-subtitle").setAttribute("disabled", !menu[dialogShownObj.index].has_milk);
 	document.getElementById("modal-hstack-small1-left").setAttribute("disabled", !menu[dialogShownObj.index].has_milk);
 
-	document.getElementById("drink-options-content").querySelectorAll("[data-button-group='milk']")[dialogShownObj.milk].classList.add("dialog-button-selected")
+	if (dialogShownObj.milk != null) {
+		document.getElementById("drink-options-content").querySelectorAll("[data-button-group='milk']")[dialogShownObj.milk].classList.add("dialog-button-selected")
+	}
 	document.getElementById("drink-options-content").querySelectorAll("[data-button-group='size']")[ + dialogShownObj.large].classList.add("dialog-button-selected");
 	if (dialogShownObj.syrup !== null ) {
 		document.getElementById("syrup-container").querySelectorAll("[data-button-group='syrup']")[dialogShownObj.syrup].classList.add("dialog-button-selected");
