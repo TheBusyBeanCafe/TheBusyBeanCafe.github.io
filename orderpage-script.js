@@ -339,7 +339,7 @@ function coffeeClicked(idx) {
 		document.getElementById("add-or-edit-title").innerHTML = "New Order"
 		document.getElementById("delete").style.display = "none";
     } else {
-		orderedCoffees.push({index: idx, date: Date.now()});
+		orderedCoffees.push({index: idx, date: Date.now(), id: uuidv4()});
 		updCurTransList()
 	}
 }
@@ -424,6 +424,12 @@ function displayData(data) {
 		for (let i = 0; i <= data.length; i++) {
 			if (i == 8) { // cookie
 				console.log("cookie");
+				let coffeeButton = document.getElementById("hstack-item" + i);
+				
+				coffeeButton.style.cursor = 'pointer';
+				coffeeButton.onclick = function () {
+					coffeeClicked(i)
+				}
 			} else if (i == 9) {  //extras menu
 				console.log("extras menu");
 				
@@ -499,7 +505,7 @@ function updCurTransList() {
 	}
 
 	function getSyrupType(syrup) {
-		if (syrup === null) {
+		if (syrup == null) {
 			return "";
 		} else {
 			return "→ Syrup: " + ["Vanilla", "Caramel"][syrup];
@@ -524,11 +530,11 @@ function updCurTransList() {
 			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">${getMilkType(element.milk)}</span>`
 		} 
 
-		if (element.syrup !== null) {
+		if (element.syrup != null) {
 			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">${getSyrupType(element.syrup)}</span>`
 		} 
 
-		if (element.sugar != 0) {
+		if (element.sugar != null && element.sugar != 0) {
 			tempBlock += `<br><span style="font-weight: 500; margin-left: 3.2vw; font-size: 1.35vw; margin-top: 0vw; margin-bottom: 0.5vw;">→ Sugars: ${element.sugar}</span>`
 		}
 
