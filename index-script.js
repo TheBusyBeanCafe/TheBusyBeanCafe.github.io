@@ -7,6 +7,11 @@ function getCurrentDate() {
 
 }
 
+if ('addEventListener' in document) {
+	document.addEventListener('DOMContentLoaded', function() {
+		FastClick.attach(document.body);
+	}, false);
+}
 
 
 async function getIntroText(url) {
