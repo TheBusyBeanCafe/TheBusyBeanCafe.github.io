@@ -1,5 +1,8 @@
 body {
 	background-color: #EBEBEB;
+	max-height: 100vh;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 .root-layout {

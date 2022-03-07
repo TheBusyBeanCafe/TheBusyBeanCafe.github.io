@@ -4,7 +4,10 @@ html, body {
 
 
 body {
-	background-color: #DFC6A9;
+	background-color: #EBEBEB;
+	max-height: 100vh;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 
