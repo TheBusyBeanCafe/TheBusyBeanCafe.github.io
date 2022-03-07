@@ -71,8 +71,10 @@ async function donepwclicked() {
 
 			const todayDate = new Date();
 
-			let currentShift = function(date) {
-				let hour = date.getHours;
+			function getCurrentShift(date) {
+				let hour = date.getHours();
+
+
 				if (hour >= 7 && hour <= 9) {
 					return "Morning";
 				} else if (hour >= 12 && hour <= 14) {
@@ -81,10 +83,24 @@ async function donepwclicked() {
 				return "";
 			}
 
+			let currentShift = getCurrentShift(todayDate);
+			console.log(currentShift);
+
 
 			console.log(json.values)
 
 			topc = json.values.filter(x => ((new Date(x[x[2] == "" ? 0 : 2])).setHours(0, 0, 0, 0).valueOf() === todayDate.setHours(0, 0, 0, 0).valueOf()) && x[3] == currentShift)
+
+
+			for (x of json.values) {
+
+				console.log(x[0])
+				console.log(x[2])
+				console.log(todayDate);
+				console.log(new Date(x[x[2] == "" ? 0 : 2]));
+
+				console.log(new Date(x[x[2] == "" ? 0 : 2]).setHours(0, 0, 0, 0) === todayDate.setHours(0, 0, 0, 0))
+			}
 
 			console.log(topc)
 
