@@ -77,6 +77,9 @@ body {
 .bar-button {
 	font-size: 1.75vw;
 	font-family: visbyround-medium;
+
+	color: black !important;
+
 	border: 0px;
 	padding-top: 0.65vh;
 	padding-bottom: 0.65vh;

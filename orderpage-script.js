@@ -11,9 +11,17 @@ var sugarCount = 0;
 let orderedCoffees = [];
 var topc = [];
 
+
+
 var doneOrders = [];
 var donePreorders = [];
 
+
+if ('addEventListener' in document) {
+	document.addEventListener('DOMContentLoaded', function() {
+		FastClick.attach(document.body);
+	}, false);
+}
 
 
 function getPass() {
