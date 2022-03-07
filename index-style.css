@@ -3,10 +3,11 @@ html, body {
 }
 
 
+
 body {
-	background-color: #EBEBEB;
+	background-color: #DFC6A9;
 	max-height: 100vh;
-	overflow: auto;
+	overflow: hidden;
 	-webkit-overflow-scrolling: touch;
 }
 

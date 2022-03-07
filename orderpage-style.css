@@ -1,7 +1,7 @@
 body {
 	background-color: #EBEBEB;
 	max-height: 100vh;
-	overflow: auto;
+	overflow: hidden;
 	-webkit-overflow-scrolling: touch;
 }
 
