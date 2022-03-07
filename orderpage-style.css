@@ -605,6 +605,7 @@ input[type=password] {
 .dialog-button {
 	background-color: white;
 	font-family: "Roboto Mono";
+	color: black !important;
 	border-radius: 1vh;
 	border: none;
 	transition: transform 0.1s;
@@ -622,6 +623,7 @@ input[type=password] {
 }
 
 .dialog-button-selected {
+	color: black !important;
 	background-color: #ffecb3;
 }
 
@@ -655,6 +657,8 @@ input[type=password] {
 	font-weight: 700;
 	font-size: 8vh;
 
+	color: black !important;
+
 	margin: 0px;
 	padding: 0px;
 }
@@ -667,7 +671,7 @@ input[type=password] {
 	font-size: 3vh;
 	font-weight: 600;
 
-	
+	color: black !important;
 
 	margin: 0px;
 	padding: 0px;
@@ -683,6 +687,8 @@ input[type=password] {
 	font-weight: 700;
 	font-size: 7.4vh;
 
+	color: black !important;
+
 	margin: 0px;
 	padding: 0px;
 }
@@ -693,7 +699,7 @@ input[type=password] {
 	font-size: 2.6vh;
 	font-weight: 600;
 
-	
+	color: black !important;
 
 	margin: 0px;
 	padding: 0px;
@@ -703,6 +709,8 @@ input[type=password] {
 
 .done-button {
 	font-size: 5vh;
+
+	color: black !important;
 }
 
 
@@ -711,6 +719,8 @@ input[type=password] {
 	font-size: 3vh;
 	font-weight: 600;
 
+
+	color: black !important;
 	
 
 	margin: 0px;
