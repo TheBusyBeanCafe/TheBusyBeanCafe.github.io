@@ -261,9 +261,6 @@ function doneclicked() {
 
 	var newobj = dialogShownObj["id"] == null;
 
-
-	dialogShownObj["date"] = Date.now()
-	
 	if (menu[dialogShownObj.index].has_milk) {
 		[].slice.call(document.getElementById("drink-options-content")
 			.querySelectorAll("[data-button-group='milk']"))
@@ -345,6 +342,7 @@ function coffeeClicked(idx) {
 			index: idx,
 			count: 1, // TODO also do post
 			sugar: 0,
+			Date.now(),
 			is_done: false
 		};
 		
