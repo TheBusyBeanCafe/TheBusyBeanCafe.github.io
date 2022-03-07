@@ -1,5 +1,5 @@
-const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
-// const API_URL = "http://127.0.0.1:5000/";
+// const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
+const API_URL = "http://127.0.0.1:5000/";
 
 
 
@@ -342,7 +342,7 @@ function coffeeClicked(idx) {
 			index: idx,
 			count: 1, // TODO also do post
 			sugar: 0,
-			Date.now(),
+			date: Date.now(),
 			is_done: false
 		};
 		
