@@ -31259,7 +31259,7 @@ div.tagsinput span.tag a {
 }
 
 .milk-card-body {
-	width: calc((100vw - 220px)/3.2);
+	width: calc((100vw - 220px)/3.4);
 	height: 75px;
 	justify-content: space-between;
 }
@@ -31272,6 +31272,11 @@ div.tagsinput span.tag a {
 	.stats-card-body {
 		width: calc((100vw)/6);
 		height: 200px;
+	}
+
+	.milk-card-body {
+		width: calc(100vw / 3.4);
+		height: 75px;
 	}
 }
 
@@ -31372,12 +31377,15 @@ div.tagsinput span.tag a {
 
 .stock-table {
 	margin-top: 10px;
+	table-layout: fixed;
 	
 }
 
 .center {
 	text-align: center !important;
 	vertical-align: center !important;
+
+	flex-wrap: wrap;
 }
 
 .stockcard-1 {
@@ -31399,7 +31407,6 @@ div.tagsinput span.tag a {
 	display: flex;
 	flex-direction: row;
 	gap: 18px;
-	height: 50px;
 }
 
 .submit-button {
@@ -31445,3 +31452,4 @@ div.tagsinput span.tag a {
 	font-family: "visbyround-bold";
 	font-size: 0.8em;
 }
+
