@@ -361,7 +361,16 @@ function coffeeClicked(idx) {
 		document.getElementById("add-or-edit-title").innerHTML = "New Order"
 		document.getElementById("delete").style.display = "none";
     } else {
-		orderedCoffees.push({index: idx, date: Date.now(), id: uuidv4()});
+		var ckie = {index: idx, date: Date.now(), id: uuidv4()}
+		orderedCoffees.push(ckie);
+		fetch(API_URL + "transactions", {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Basic ' + pass
+			},
+			body: JSON.stringify(ckie)
+		});
 		updCurTransList()
 	}
 }
