@@ -11646,13 +11646,13 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 
 .btn-primary:hover {
 	color: #fff;
-	background-color: #1a3298;
+	background-color: #DFC6A9;
 	border-color: #DFC6A9;
 }
 
 .btn-check:focus + .btn-primary, .btn-primary:focus {
 	color: #fff;
-	background-color: #1a3298;
+	background-color: #DFC6A9;
 	border-color: #DFC6A9;
 	box-shadow: 0 0 0 0.25rem rgba(65, 88, 190, 0.5);
 }
@@ -11662,7 +11662,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 .show > .btn-primary.dropdown-toggle {
 	color: #fff;
 	background-color: #DFC6A9;
-	border-color: #172c86;
+	border-color: #DFC6A9;
 }
 
 .btn-check:checked + .btn-primary:focus,
@@ -31258,6 +31258,12 @@ div.tagsinput span.tag a {
 	justify-content: space-between;
 }
 
+.milk-card-body {
+	width: calc((100vw - 220px)/3.2);
+	height: 75px;
+	justify-content: space-between;
+}
+
 .card-body {
 	justify-content: space-between;
 }
@@ -31304,4 +31310,138 @@ div.tagsinput span.tag a {
 }
 
 
+.h-flex {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin: 0px !important;
+	padding: 0px !important;
+}
 
+.contiguous-v-flex-2 {
+	display: flex;
+	flex-direction: column;
+	justify-content: left;
+	gap: 0px;
+}
+
+.milk-card-body {
+	padding: 1rem 1rem !important;
+}
+
+.clean {
+	padding: 0px !important;
+	margin: 0px !important;
+	line-height: normal;
+}
+
+.milk-title {
+	font-family: "visbyround-medium";
+	padding: 0px !important;
+	margin: 0px;
+	margin-right: 30px;
+	margin-left: 15px;
+}
+
+.milk-subtitle {
+	margin-left: 15px;
+}
+
+
+
+/* INVENTORY */
+
+.inventory-split-h {
+	display: flex;
+	flex-direction: row;
+	gap: 45px;
+	width: 100%;
+}
+
+.inventory-v {
+	display: flex;
+	flex-direction: column;
+	width: calc((100vw - 220px)*(1 - 0.618));
+}
+
+.stockcontrol-v {
+	display: flex;
+	flex-direction: column;
+	width: calc((100vw - 220px)*0.618);
+}
+
+.stock-table {
+	margin-top: 10px;
+	
+}
+
+.center {
+	text-align: center !important;
+	vertical-align: center !important;
+}
+
+.stockcard-1 {
+	margin-bottom: 30px;
+}
+
+
+.dot {
+	height: 12px;
+	width: 12px;
+	background-color: #388e3c;
+	border-radius: 50%;
+	display: inline-block;
+	text-align: center !important;
+	vertical-align: center !important;
+}
+
+.stock-h {
+	display: flex;
+	flex-direction: row;
+	gap: 18px;
+	height: 50px;
+}
+
+.submit-button {
+	height: 30px;
+	color: #DFC6A9;
+	background-color: #DFC6A9;
+	padding: 6px !important;
+}
+
+.submit-text {
+	color: #000;
+	font-family: "visbyround-medium";
+	font-size: 1.4em;
+	margin: 0px !important;
+	padding: 0px !important;
+}
+
+.stock-width-input {
+	width: 80px;
+}
+
+.stock-width-select {
+	width: 200px
+}
+
+.stock-height {
+	height: 30px;
+}
+
+
+.stock-v-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.each-v-container {
+	display: flex;
+	flex-direction: column;
+	gap: 0px;
+}
+
+.stock-heading-small {
+	font-family: "visbyround-bold";
+	font-size: 0.8em;
+}
