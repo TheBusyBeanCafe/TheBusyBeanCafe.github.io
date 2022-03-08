@@ -1,5 +1,5 @@
-const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
-// const API_URL = "http://127.0.0.1:5000/";
+//const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
+const API_URL = "http://127.0.0.1:5000/";
 
 
 
@@ -361,7 +361,7 @@ function coffeeClicked(idx) {
 		document.getElementById("add-or-edit-title").innerHTML = "New Order"
 		document.getElementById("delete").style.display = "none";
     } else {
-		var ckie = {index: idx, date: Date.now(), id: uuidv4(), count: 1}
+		var ckie = {index: idx, date: Date.now(), id: uuidv4(), count: 1, large: false}
 		orderedCoffees.push(ckie);
 		fetch(API_URL + "transactions", {
 			method: "POST",
