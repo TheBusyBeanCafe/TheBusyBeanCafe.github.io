@@ -5,7 +5,7 @@ const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
 
 
 
-var menu, drink_addons, modal, pass, passmodal, g_api_key, sheets_total_row;
+var menu, drink_addons, modal, g_api_key, sheets_total_row, pass;
 
 var sugarCount = 0;
 let orderedCoffees = [];
@@ -24,10 +24,78 @@ if ('addEventListener' in document) {
 }
 
 
-function getPass() {
-	passmodal = document.getElementById("pass-modal");
-	passmodal.style.display = "flex"
+async function initpreorder() {
+	const response = await fetch(API_URL + "g_api_key",
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Basic ' + pass
+			}
+		});
+	g_api_key = await response.json()
+	console.log(g_api_key)
+
+
+	updateSheetTotalRows()
+
+	setInterval(async () => {
+		const response2 = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE/values/A2:K' + sheets_total_row + '?key=' + g_api_key)
+		var json = await response2.json();
+
+
+		const todayDate = new Date();
+
+		function getCurrentShift(date) {
+			let hour = date.getHours();
+
+
+			if (hour >= 7 && hour <= 9) {
+				return "Morning";
+			} else if (hour >= 12 && hour <= 14) {
+				return "Lunch";
+			}
+			return "";
+		}
+
+		let currentShift = getCurrentShift(todayDate);
+		console.log(currentShift);
+
+
+		console.log(json.values)
+
+		topc = json.values.filter(x => ((new Date(x[x[2] == "" ? 0 : 2])).setHours(0, 0, 0, 0).valueOf() === todayDate.setHours(0, 0, 0, 0).valueOf()) && x[3] == currentShift)
+
+
+		for (x of json.values) {
+
+			console.log(x[0])
+			console.log(x[2])
+			console.log(todayDate);
+			console.log(new Date(x[x[2] == "" ? 0 : 2]));
+
+			console.log(new Date(x[x[2] == "" ? 0 : 2]).setHours(0, 0, 0, 0) === todayDate.setHours(0, 0, 0, 0))
+		}
+
+		console.log(topc)
+
+
+
+		if (topc.length > donePreorders.length) {
+			let difference = (topc.length - donePreorders.length);
+
+			
+			for (var i = 0; i < difference; i++) {
+				donePreorders.push(false)
+			}
+		}
+
+
+		updPreOrderList();
+
+
+	}, 10 * 1000);
 }
+
 
 
 async function updateSheetTotalRows() {
@@ -50,88 +118,6 @@ async function updateSheetTotalRows() {
 	10: SUGARS
 */
 
-
-async function donepwclicked() {
-	pass = btoa(document.getElementById("password").value)
-	var res = await getMenuItems(API_URL + "menu")
-	if ( res === false) {
-		console.log("wrong pass")
-		document.getElementById("password").value = ''
-		document.getElementById("password").classList.add("pw-invalid")
-	} else {
-		passmodal.style.display = "none"
-		const response = await fetch(API_URL + "g_api_key",
-			{
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Basic ' + pass
-				}
-			});
-		g_api_key = await response.json()
-
-
-		updateSheetTotalRows()
-
-		setInterval(async () => {
-			const response2 = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1K17iXi_wg8tW_xEf82RiBrYhgW0eKNgPTrIiy6x7VbE/values/A2:K' + sheets_total_row + '?key=' + g_api_key)
-			var json = await response2.json();
-
-
-			const todayDate = new Date();
-
-			function getCurrentShift(date) {
-				let hour = date.getHours();
-
-
-				if (hour >= 7 && hour <= 9) {
-					return "Morning";
-				} else if (hour >= 12 && hour <= 14) {
-					return "Lunch";
-				}
-				return "";
-			}
-
-			let currentShift = getCurrentShift(todayDate);
-			console.log(currentShift);
-
-
-			console.log(json.values)
-
-			topc = json.values.filter(x => ((new Date(x[x[2] == "" ? 0 : 2])).setHours(0, 0, 0, 0).valueOf() === todayDate.setHours(0, 0, 0, 0).valueOf()) && x[3] == currentShift)
-
-
-			for (x of json.values) {
-
-				console.log(x[0])
-				console.log(x[2])
-				console.log(todayDate);
-				console.log(new Date(x[x[2] == "" ? 0 : 2]));
-
-				console.log(new Date(x[x[2] == "" ? 0 : 2]).setHours(0, 0, 0, 0) === todayDate.setHours(0, 0, 0, 0))
-			}
-
-			console.log(topc)
-
-
-
-			if (topc.length > donePreorders.length) {
-				let difference = (topc.length - donePreorders.length);
-
-				
-				for (var i = 0; i < difference; i++) {
-					donePreorders.push(false)
-				}
-			}
-
-
-			updPreOrderList();
-
-
-		}, 10 * 1000);
-		// console.log(sheets_total_row)
-		// console.log("right pass")
-	}
-}
 
 function updPreOrderList() {
 	let display = ``;
@@ -710,10 +696,16 @@ function confirmCancelEnd() {
 }
 
 window.addEventListener("load", () => {
+	console.log('balls')
+	pass = window.sessionStorage.getItem("pass")
+	console.log(pass)
 	if (pass == null) {
-		getPass()
+		console.log("uh o")
+		window.location.href = "/index.html"
+	} else {
+		initpreorder()
+		getMenuItems(API_URL + "menu")
 	}
-
 
 	getCurrentDate();
 	modal = document.getElementById("drink-options-modal");

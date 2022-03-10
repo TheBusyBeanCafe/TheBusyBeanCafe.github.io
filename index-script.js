@@ -1,10 +1,53 @@
 const API_SHIFT_URL = "https://thebusybeancafeapi.azurewebsites.net/shifts"
+const API_URL = "https://thebusybeancafeapi.azurewebsites.net/"
 // const API_SHIFT_URL = "http://127.0.0.1:5000/shifts";
 
 function getCurrentDate() {
 
 	return [hour, day]
 
+}
+
+var pass
+
+function getPass() {
+	passmodal = document.getElementById("pass-modal");
+	passmodal.style.display = "flex"
+}
+
+function authed() {
+		getIntroText(API_SHIFT_URL);
+		shiftNavigation();
+}
+
+async function getMenuItems(url) {
+	const response = await fetch(url,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Basic ' + pass
+			}
+		});
+	if (response.status == 401) {
+		return false
+	}
+}
+
+async function donepwclicked() {
+	pass = btoa(document.getElementById("password").value)
+	// TODO use shifts not this
+	var res = await getMenuItems(API_URL + "menu")
+	if ( res === false) {
+		console.log("wrong pass")
+		document.getElementById("password").value = ''
+		document.getElementById("password").classList.add("pw-invalid")
+	} else {
+		passmodal.style.display = "none"
+		sessionStorage.setItem('pass', pass);
+		authed()
+		// console.log(sheets_total_row)
+		// console.log("right pass")
+	}
 }
 
 if ('addEventListener' in document) {
@@ -111,8 +154,13 @@ function shiftNavigation() {
 
 
 window.addEventListener("load", () => {
-	getIntroText(API_SHIFT_URL);
-	shiftNavigation();
+	pass = window.sessionStorage.getItem("pass")
+	console.log(pass)
+	if (pass == null) {
+		getPass()
+	} else {
+		authed()
+	}
 });
 
 
