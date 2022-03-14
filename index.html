@@ -11,6 +11,7 @@
 
 
 
+  <link rel="stylesheet" href="orderpage-style.css"> <!-- for the modal -->
   <link rel="stylesheet" href="index-style.css">
   <script type="text/javascript" src="index-script.js"></script>
 
@@ -25,6 +26,19 @@
 
 
 <body>
+	<div id="pass-modal" class="modal-bg">
+		<div id="pass-modal-content" class="modal-content">
+			<h2 id="pass-title" class="dialog-title">
+				Please Login
+			</h2>
+			<input id="password" type="password" onkeydown="if (event.keyCode == 13) document.getElementById('done-pw').click()">
+			<button type="button" id="done-pw" class="dialog-button" onclick="donepwclicked()">
+				<h2 id="pass-done" class="button-short-name">
+					LOGIN
+				</h2>
+			</button>
+		</div>
+	</div>
 	<div class="main-vflex">
 		<div class="top-vflex">
 			<div id="main-heading" class="main-heading">

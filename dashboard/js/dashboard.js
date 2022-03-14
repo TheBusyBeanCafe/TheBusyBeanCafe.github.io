@@ -1,12 +1,14 @@
 const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
-// const API_URL = "http://127.0.0.1:5000/";
+//const API_URL = "http://127.0.0.1:5000/";
+
+var pass;
 
 async function fetchData() {
 	const response = await fetch(API_URL + "transactions", {
 		method: "GET",
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': 'Basic ' + btoa('thebusybeancafe2022')
+			'Authorization': 'Basic ' + pass
 		}
 	});
 
@@ -71,9 +73,20 @@ function getFreeCoffeeAmount(response) {
 
 // console.log(getRevenuePerDay(fetchData(), 14));
 
+
+pass = window.sessionStorage.getItem("pass")
+console.log(pass)
+if (pass == null) {
+	console.log("uh o")
+	window.location.href = "/index.html"
+}
+
 let fetchedData = fetchData();
 
 window.addEventListener("load", () => {
+
+
+
 	var dailyRevenue;
 
 	console.log(fetchedData);
