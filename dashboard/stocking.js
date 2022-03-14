@@ -8,16 +8,21 @@ function submitStockUse() {
 	object = {
 		date: Date.now()
 	};
-	object[document.getElementById("current-stock-use").selectedOptions[0].value] = document.getElementById("current-stock-use-count").valueAsNumber
-	fetch(API_URL + "stock", {
-		method: "POST",
-		headers: {
-			'Content-Type': 'application/json',
-			'Authorization': 'Basic ' + pass
-		},
-		body: JSON.stringify(object)
-	})
-	console.log(object)
+	let val = document.getElementById("current-stock-use-count").valueAsNumber
+	object[document.getElementById("current-stock-use").selectedOptions[0].value] = val
+	if (!isNaN(val)) {
+		console.log(val)
+		document.getElementById("current-stock-use-count").value = ""
+		fetch(API_URL + "stock", {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Basic ' + pass
+			},
+			body: JSON.stringify(object)
+		})
+		console.log(object)
+	}
 }
 
 
@@ -27,16 +32,23 @@ function submitStockNew() {
 	object = {
 		date: Date.now()
 	};
-	object[document.getElementById("current-stock-use").selectedOptions[0].value] = document.getElementById("current-stock-use-count").valueAsNumber
-	object.cost = document.getElementById("current-stock-new-cost").valueAsNumber
-	fetch(API_URL + "stock", {
-		method: "POST",
-		headers: {
-			'Content-Type': 'application/json',
-			'Authorization': 'Basic ' + pass
-		},
-		body: JSON.stringify(object)
-	})
+	let val = document.getElementById("current-stock-new-count").valueAsNumber
+	let val2 = document.getElementById("current-stock-new-cost").valueAsNumber
+	
+	object[document.getElementById("current-stock-new").selectedOptions[0].value] = val
+	object.cost = val2
+	if (!isNaN(val) && !isNaN(val2)) {
+		document.getElementById("current-stock-new-count").value = ""
+		document.getElementById("current-stock-new-cost").value = ""
+		fetch(API_URL + "stock", {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Basic ' + pass
+			},
+			body: JSON.stringify(object)
+		})
+	}
 }
 
 
