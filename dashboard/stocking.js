@@ -51,7 +51,19 @@ function submitStockNew() {
 	}
 }
 
-
+async function updStock() {
+	const resp = await fetch(API_URL + "stock", {
+		headers: {
+			'Authorization': 'Basic ' + pass
+		}
+	});
+	let json = await resp.json()
+	console.log(json)
+	for (var item in json) {
+		console.log(item)
+		document.getElementById("count-" + item).innerText = json[item]
+	}
+}
 
 
 window.addEventListener("load", () => {
@@ -62,7 +74,6 @@ window.addEventListener("load", () => {
 		console.log("uh o")
 		window.location.href = "/index.html"
 	} else {
-		initpreorder()
-		getMenuItems(API_URL + "menu")
+		updStock()
 	}
 })
