@@ -114,7 +114,16 @@ body {
 
 
 
-
+.notification-badge {
+	z-index: 100 !important;
+	display: none;
+	position: absolute;
+	transform: translate(-0.4vw, -0.4vw);
+	border-radius: 50%;
+	background: red;
+	width: 1vw;
+	height: 1vw;
+}
 
 
 
@@ -654,7 +663,7 @@ input[type=password] {
 }
 
 #delete {
-	background: #FF867C;
+	background: #FF867C; 
 	display: none;
 }
 

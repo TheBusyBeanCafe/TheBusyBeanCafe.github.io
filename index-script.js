@@ -1,6 +1,7 @@
 const API_SHIFT_URL = "https://thebusybeancafeapi.azurewebsites.net/shifts"
-const API_URL = "https://thebusybeancafeapi.azurewebsites.net/"
 // const API_SHIFT_URL = "http://127.0.0.1:5000/shifts";
+const API_URL = "https://thebusybeancafeapi.azurewebsites.net/"
+// const API_URL = "http://127.0.0.1:5000/";
 
 function getCurrentDate() {
 

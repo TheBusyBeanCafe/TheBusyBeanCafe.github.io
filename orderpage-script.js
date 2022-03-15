@@ -1,5 +1,5 @@
 const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
-// const API_URL = "http://127.0.0.1:5000/";
+/// const API_URL = "http://127.0.0.1:5000/";
 
 
 
@@ -48,7 +48,6 @@ async function initpreorder() {
 		function getCurrentShift(date) {
 			let hour = date.getHours();
 
-
 			if (hour >= 7 && hour <= 9) {
 				return "Morning";
 			} else if (hour >= 12 && hour <= 14) {
@@ -86,6 +85,10 @@ async function initpreorder() {
 			
 			for (var i = 0; i < difference; i++) {
 				donePreorders.push(false)
+			}
+
+			if (document.getElementById("pre-orders").style.display == "none") { // if currently not showing pre orders
+				document.getElementById("notification-badge").style.display = "block";
 			}
 		}
 
@@ -180,10 +183,6 @@ function getOrderSubText() {
 	
 	/* ****************** */
 
-	/*
-	day = 4;
-	hour = 8;
-	*/
 	
 	var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day]
 	
@@ -654,6 +653,8 @@ function showPreOrders() {
 	document.getElementById("preorders-button").addEventListener("click", () => {
 		document.getElementById("pre-orders").style.display = "flex";
 		document.getElementById("orders").style.display = "none"
+		document.getElementById("notification-badge").style.display = "none";
+
 	})
 }
 
@@ -694,6 +695,8 @@ function confirmCancelEnd() {
 		document.getElementById("cancel-endshift-button").style.display = "none";
 	})
 }
+
+
 
 window.addEventListener("load", () => {
 	console.log('balls')
