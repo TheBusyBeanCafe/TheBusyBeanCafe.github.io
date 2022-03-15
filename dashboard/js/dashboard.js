@@ -78,7 +78,7 @@ pass = window.sessionStorage.getItem("pass")
 console.log(pass)
 if (pass == null) {
 	console.log("uh o")
-	window.location.href = "/index.html"
+	window.location.href = "../index.html"
 }
 
 let fetchedData = fetchData();
