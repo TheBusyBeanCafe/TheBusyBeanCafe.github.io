@@ -19,38 +19,34 @@ async function fetchData() {
 
 let currentDate = Date.now();
 
-function getRevenuePerDay(response, period) {
+function getRevenuePerDay(response, period, paid) {
 	var res = new Array(period);
-	// console.log(res);
 	let tempDate = new Date();
 
 	for (let item of response) {
 		var ix = Math.floor((tempDate - (new Date(item["date"])).setHours(0, 0, 0, 0)) / 86400000)
-		// console.log(ix);
 
-		if (res[ix] == undefined) {
-			res[ix] = []
-		}
-
-		if (ix < 14) {
-			res[ix].push(item);
-		}
+		if (res[ix] == undefined) res[ix] = [];
+		if (ix < period) res[ix].push(item);
 	}
+	let revenueArray = new Array(period);
 
-	console.log(res)
-
-	let revenueArray = []
-
-	for (let day of res) {
-		let revenue = 0;
-		if (day !== undefined) {
-			revenueArray.push(day.map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur)));
+	for (var i = 0; i < res.length; i++) {
+		if (res[i] !== undefined) {
+			if (paid) {
+				revenueArray[i] = (res[i].map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur)));	
+			} else {
+				revenueArray[i] = (res[i].map(x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur)));
+			}
+			
 		} else {
-			revenueArray.push(0);
+			revenueArray[i] = 0;
 		}
 	}
 
-	return revenueArray.reverse();
+	revenueArray.reverse()
+
+	return revenueArray;
 }
 
 function getRange(response, range) {
@@ -61,12 +57,35 @@ function getCoffeesSold(response) {
 	return getRange(response, 604_800_000).length // todo link custom date
 }
 
+function getItemAll(response) {
+	return response.length;
+}
+
+function getRevenueAll(response) {
+	return response.map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
+}
+
 function getRevenue(response) {
 	return getRange(response, 604_800_000).map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
 }
 
 function getFreeCoffeeAmount(response) {
 	return getRange(response, 604_800_000).map(x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
+}
+
+function getDays(period) {
+	let currentDate = new Date();
+	let tempDate = new Date();
+
+	let res = [];
+
+	for (let i = 0; i < period; i++) {
+		let temp = new Date(tempDate.setDate(currentDate.getDate() - i)).toLocaleDateString("en-NZ", { weekday: 'short'});
+		res.push(temp);
+	}
+
+	res.reverse();
+	return res;
 }
 
 
@@ -88,15 +107,22 @@ window.addEventListener("load", () => {
 
 
 	var dailyRevenue;
+	var freeRevenue;
+	var dayNames;
 
 	console.log(fetchedData);
 
 
 	fetchedData.then(value => {
-		dailyRevenue = getRevenuePerDay(value, 14)
+		dailyRevenue = getRevenuePerDay(value, 14, true);
+		freeRevenue = getRevenuePerDay(value, 14, false);
 		document.getElementById("revenue-week").innerHTML = "$" + getRevenue(responseJSON);	
 		document.getElementById("coffees-sold-week").innerHTML = getCoffeesSold(responseJSON);	
 		document.getElementById("free-week").innerHTML = "$" + getFreeCoffeeAmount(responseJSON);
+		document.getElementById("revenue-all").innerHTML = "$" + getRevenueAll(responseJSON);
+		document.getElementById("coffees-sold-all").innerHTML = getItemAll(responseJSON);
+
+		dayNames = getDays(14);
 
 		(function($) {
 			'use strict';
@@ -117,10 +143,10 @@ window.addEventListener("load", () => {
 		
 		
 					var salesTopData = {
-							labels: ["MON1", "TUE1", "WED1", "THU1", "FRI1", "MON2", "TUE2", "WED2", "THU2", "FRI2"],
+							labels: dayNames,
 		
 							datasets: [{
-									label: 'Lunch Shifts',
+									label: 'Earnt Revenue',
 									data: dailyRevenue,
 									backgroundColor: saleGradientBg,
 									borderColor: [
@@ -134,8 +160,8 @@ window.addEventListener("load", () => {
 									pointBackgroundColor: ['#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3'],
 									pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
 							},{
-								label: 'Morning Shifts',
-								data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+								label: 'Free Coffees Worth',
+								data: freeRevenue,
 								backgroundColor: saleGradientBg2,
 								borderColor: [
 										'#52CDFF',
@@ -177,7 +203,7 @@ window.addEventListener("load", () => {
 										ticks: {
 											beginAtZero: false,
 											autoSkip: true,
-											maxTicksLimit: 10,
+											maxTicksLimit: 14,
 											fontSize: 10,
 											color:"#6B778C"
 										}
