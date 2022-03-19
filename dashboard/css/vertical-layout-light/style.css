@@ -31363,6 +31363,23 @@ div.tagsinput span.tag a {
 	width: 100%;
 }
 
+@media (max-width: 1300px) {
+	.inventory-split-h {
+		display: flex;
+		flex-direction: column;
+		gap: 45px;
+		width: 100%;
+	}
+
+	.inventory-v {
+		width: 100% !important;
+	}
+
+	.stockcontrol-v {
+		width: 100% !important;
+	}
+}
+
 .inventory-v {
 	display: flex;
 	flex-direction: column;
