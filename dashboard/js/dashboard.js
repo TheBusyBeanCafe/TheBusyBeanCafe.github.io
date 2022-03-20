@@ -57,8 +57,9 @@ function getRange(response, range) {
 	return (response.filter(x => x["date"] <= currentDate && x["date"] >= (currentDate - range)))
 }
 
-function getCoffeesSold(response) {		
-	return getRange(response, 604_800_000).length // todo link custom date
+function getCoffeesSold(response, days) {		
+
+	return getRange(response, 86_400_000*days).length // todo link custom date
 }
 
 function getItemAll(response) {
@@ -129,6 +130,48 @@ function getNumberPerDay(response, range, amount) {
 	return [paidFinal.reverse(), freeFinal.reverse()];
 }
 
+function getPercentageEftpos(response) {
+	const afterEftposIntroduction = response.filter(x => (x["date"] >= 1646068442000))
+
+	const eftposCount = afterEftposIntroduction.filter(x => x["payment"] == 1).length
+	const totalCount = afterEftposIntroduction.filter(x => x["payment"] != 1).length
+	
+	return (eftposCount / totalCount)
+}
+
+function getPercentageLarge(response) {
+	const largeOrders = response.filter(x => x["large"]).length
+	const totalNum = response.length
+
+	console.log(largeOrders, totalNum)
+
+	return largeOrders / totalNum
+}
+
+function getAdditionalItems(response) {
+	let tempDate = new Date();
+
+	res = new Array(14);
+
+	for (let item of response) {
+		var ix = Math.floor((tempDate - (new Date(item["date"])).setHours(0, 0, 0, 0)) / 86400000)
+
+		// PAID
+		if (res[ix] == undefined) res[ix] = [];
+		if (ix < 14 && item["payment"] != 3) res[ix].push(item);
+	}
+
+	final = res.map(y => y.filter(x => (x["milk"] != 0 && x["milk"] != null) || x["sugar"] != 0 || x["syrup"] != null))
+
+	count = final.reduce((prev, cur) => prev + cur.length, 0)
+
+	final = final.map(x => x.length)
+
+	console.log(final)
+
+	return [count, final]
+}
+
 
 // console.log(getRevenuePerDay(fetchData(), 14));
 
@@ -156,17 +199,25 @@ window.addEventListener("load", () => {
 	fetchedData.then(value => {
 		dailyRevenue = getRevenuePerDay(value, 14, true);
 		freeRevenue = getRevenuePerDay(value, 14, false);
-		document.getElementById("revenue-week").innerHTML = "$" + getRevenue(responseJSON);	
-		document.getElementById("coffees-sold-week").innerHTML = getCoffeesSold(responseJSON);	
-		document.getElementById("free-week").innerHTML = "$" + getFreeCoffeeAmount(responseJSON);
-		document.getElementById("revenue-all").innerHTML = "$" + getRevenueAll(responseJSON);
-		document.getElementById("coffees-sold-all").innerHTML = getItemAll(responseJSON);
+		document.getElementById("revenue-week").innerHTML = "$" + getRevenue(value);	
+		document.getElementById("coffees-sold-week").innerHTML = getCoffeesSold(value, 7);	
+		document.getElementById("free-week").innerHTML = "$" + getFreeCoffeeAmount(value);
+		document.getElementById("revenue-all").innerHTML = "$" + getRevenueAll(value);
+		document.getElementById("coffees-sold-all").innerHTML = getItemAll(value);
 
-		dayNames = getDays(14);
+		const dayNames = getDays(14);
 
-		coffeeTypes = getItemTypes(value);
+		const coffeeTypes = getItemTypes(value);
 
-		coffeeNumbers = getNumberPerDay(value, 14, 86400000);
+		const coffeeNumbers = getNumberPerDay(value, 14, 86400000);
+
+		const eftposPercentage = getPercentageEftpos(value);
+
+		const largePercentage = getPercentageLarge(value);
+
+		const additionalItems = getAdditionalItems(value);
+
+		document.getElementById("items-sold-fortnight").innerHTML = getCoffeesSold(value, 14);	
 
 		console.log(coffeeNumbers);
 
@@ -178,14 +229,14 @@ window.addEventListener("load", () => {
 					var graphGradient2 = document.getElementById("performaneLine").getContext('2d');
 		
 					var saleGradientBg = graphGradient.createLinearGradient(5, 0, 5, 100);
-		
-					saleGradientBg.addColorStop(0, 'rgba(26, 115, 232, 0.18)');
-					saleGradientBg.addColorStop(1, 'rgba(26, 115, 232, 0.02)');
+
+					saleGradientBg.addColorStop(0, 'rgba(210, 120, 66, 0.18)');
+					saleGradientBg.addColorStop(1, 'rgba(210, 120, 66, 0.02)');
 		
 					var saleGradientBg2 = graphGradient2.createLinearGradient(100, 0, 50, 150);
 		
-					saleGradientBg2.addColorStop(0, 'rgba(0, 208, 255, 0.19)');
-					saleGradientBg2.addColorStop(1, 'rgba(0, 208, 255, 0.03)');
+					saleGradientBg2.addColorStop(0, 'rgba(204, 149, 67, 0.08)');
+					saleGradientBg2.addColorStop(1, 'rgba(204, 149, 67, 0.04)');
 		
 		
 					var salesTopData = {
@@ -195,29 +246,25 @@ window.addEventListener("load", () => {
 									label: 'Earnt Revenue',
 									data: dailyRevenue,
 									backgroundColor: saleGradientBg,
-									borderColor: [
-											'#1F3BB3',
-									],
+									borderColor: ['#d27842'],
 									borderWidth: 1.5,
 									fill: true, // 3: no fill
 									pointBorderWidth: 1,
 									pointRadius: [4, 4, 4, 4, 4,4, 4, 4, 4, 4,4, 4, 4],
 									pointHoverRadius: [2, 2, 2, 2, 2,2, 2, 2, 2, 2,2, 2, 2],
-									pointBackgroundColor: ['#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3'],
+									pointBackgroundColor: ['#d27842', '#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842'],
 									pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
 							}, {
 								label: 'Free Coffees Worth',
 								data: freeRevenue,
 								backgroundColor: saleGradientBg2,
-								borderColor: [
-										'#52CDFF',
-								],
+								borderColor: ['#cc9543'],
 								borderWidth: 1.5,
 								fill: true, // 3: no fill
 								pointBorderWidth: 1,
 								pointRadius: [0, 0, 0, 4, 0],
 								pointHoverRadius: [0, 0, 0, 2, 0],
-								pointBackgroundColor: ['#52CDFF', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF'],
+								pointBackgroundColor: ['#cc9543', '#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543'],
 									pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
 						}]
 					};
@@ -288,83 +335,83 @@ window.addEventListener("load", () => {
 				}
 		
 		
-				
 				if ($("#status-summary").length) {
 					var statusSummaryChartCanvas = document.getElementById("status-summary").getContext('2d');;
 					var statusData = {
-							labels: ["SUN", "MON", "TUE", "WED", "THU", "FRI"],
-							datasets: [{
-									label: '# of Votes',
-									data: [50, 68, 70, 10, 12, 80],
-									backgroundColor: "#ffcc00",
-									borderColor: [
-											'#01B6A0',
-									],
-									borderWidth: 2,
-									fill: false, // 3: no fill
-									pointBorderWidth: 0,
-									pointRadius: [0, 0, 0, 0, 0, 0],
-									pointHoverRadius: [0, 0, 0, 0, 0, 0],
-							}]
+						labels: ["SUN", "MON", "TUE", "WED", "THU", "FRI"],
+						datasets: [{
+							label: '# of Votes',
+							data: additionalItems[1],
+							backgroundColor: "#ffcc00",
+							borderColor: [
+								'#d43d51',
+							],
+							borderWidth: 2,
+							fill: false, // 3: no fill
+							pointBorderWidth: 0,
+							pointRadius: [0, 0, 0, 0, 0, 0],
+							pointHoverRadius: [0, 0, 0, 0, 0, 0],
+						}]
 					};
-			
+
+					document.getElementById("additional-items").innerHTML = additionalItems[0]
+				
 					var statusOptions = {
-						responsive: true,
-						maintainAspectRatio: false,
-							scales: {
-									yAxes: [{
-										display:false,
-											gridLines: {
-													display: false,
-													drawBorder: false,
-													color:"#F0F0F0"
-											},
-											ticks: {
-												beginAtZero: false,
-												autoSkip: true,
-												maxTicksLimit: 4,
-												fontSize: 10,
-												color:"#6B778C"
-											}
-									}],
-									xAxes: [{
-										display:false,
-										gridLines: {
-												display: false,
-												drawBorder: false,
-										},
-										ticks: {
-											beginAtZero: false,
-											autoSkip: true,
-											maxTicksLimit: 7,
-											fontSize: 10,
-											color:"#6B778C"
-										}
-								}],
-							},
-							legend:false,
-							
-							elements: {
-									line: {
-											tension: 0.4,
-									}
-							},
-							tooltips: {
-									backgroundColor: 'rgba(31, 59, 179, 1)',
+					  responsive: true,
+					  maintainAspectRatio: false,
+						scales: {
+							yAxes: [{
+							  display:false,
+								gridLines: {
+									display: false,
+									drawBorder: false,
+									color:"#F0F0F0"
+								},
+								ticks: {
+								  beginAtZero: false,
+								  autoSkip: true,
+								  maxTicksLimit: 4,
+								  fontSize: 10,
+								  color:"#6B778C"
+								}
+							}],
+							xAxes: [{
+							  display:false,
+							  gridLines: {
+								  display: false,
+								  drawBorder: false,
+							  },
+							  ticks: {
+								beginAtZero: false,
+								autoSkip: true,
+								maxTicksLimit: 7,
+								fontSize: 10,
+								color:"#6B778C"
+							  }
+						  }],
+						},
+						legend:false,
+						
+						elements: {
+							line: {
+								tension: 0.4,
 							}
+						},
+						tooltips: {
+							backgroundColor: 'rgba(31, 59, 179, 1)',
+						}
 					}
 					var statusSummaryChart = new Chart(statusSummaryChartCanvas, {
-							type: 'line',
-							data: statusData,
-							options: statusOptions
+						type: 'line',
+						data: statusData,
+						options: statusOptions
 					});
-				}
+				  }
+				
 		
 				if ($('#totalVisitors').length) {
 					var bar = new ProgressBar.Circle(totalVisitors, {
 						color: '#fff',
-						// This has to be the same size as the maximum width to
-						// prevent clipping
 						strokeWidth: 15,
 						trailWidth: 15, 
 						easing: 'easeInOut',
@@ -373,11 +420,11 @@ window.addEventListener("load", () => {
 							autoStyleContainer: false
 						},
 						from: {
-							color: '#52CDFF',
+							color: '#81c784',
 							width: 15
 						},
 						to: {
-							color: '#677ae4',
+							color: '#66bb6a',
 							width: 15
 						},
 						// Set default step function for all animate calls
@@ -396,7 +443,8 @@ window.addEventListener("load", () => {
 					});
 			
 					bar.text.style.fontSize = '0rem';
-					bar.animate(.64); // Number from 0.0 to 1.0
+					bar.animate(eftposPercentage); // Number from 0.0 to 1.0
+					document.getElementById("eftposPercent").innerHTML = eftposPercentage.toFixed(4)*100 + "%"
 				}
 		
 				if ($('#visitperday').length) {
@@ -435,7 +483,8 @@ window.addEventListener("load", () => {
 					});
 			
 					bar.text.style.fontSize = '0rem';
-					bar.animate(.34); // Number from 0.0 to 1.0
+					bar.animate(largePercentage); // Number from 0.0 to 1.0
+					document.getElementById("largePercent").innerHTML = largePercentage.toFixed(4)*100 + "%"
 				}
 		
 				if ($("#marketingOverview").length) {
@@ -445,9 +494,9 @@ window.addEventListener("load", () => {
 							datasets: [{
 									label: 'Free Items',
 									data: coffeeNumbers[1],
-									backgroundColor: "#52CDFF",
+									backgroundColor: "#cc9543",
 									borderColor: [
-											'#52CDFF',
+											'#cc9543',
 									],
 									borderWidth: 0,
 									fill: true, // 3: no fill
@@ -455,9 +504,9 @@ window.addEventListener("load", () => {
 							},{
 								label: 'Paid Items',
 								data: coffeeNumbers[0],
-								backgroundColor: "#1F3BB3",
+								backgroundColor: "#d27842",
 								borderColor: [
-										'#1F3BB3',
+										'#d27842',
 								],
 								borderWidth: 0,
 								fill: true, // 3: no fill

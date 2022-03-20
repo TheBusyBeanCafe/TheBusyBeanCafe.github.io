@@ -16723,7 +16723,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 
 .text-info {
 	--bs-text-opacity: 1;
-	color: rgba(var(--bs-info-rgb), var(--bs-text-opacity)) !important;
+	color: #d43d51 !important;
 }
 
 .text-warning {
@@ -16799,7 +16799,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 
 .bg-primary, .settings-panel .color-tiles .tiles.primary {
 	--bs-bg-opacity: 1;
-	background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+	background-color: rgba(240, 184, 184, 0.6) !important;
 }
 
 .bg-secondary {
@@ -20833,6 +20833,10 @@ code {
 	align-items: center;
 	justify-content: right;
 	margin-bottom: 0;
+}
+
+.small-circle-text {
+	gap: 10px;
 }
 
 .home-tab .chartjs-legend ul li {
@@ -31473,4 +31477,8 @@ div.tagsinput span.tag a {
 .stock-heading-small {
 	font-family: "visbyround-bold";
 	font-size: 0.8em;
+}
+
+.circle-text {
+	transform: translateX(15px) !important;
 }
