@@ -534,7 +534,7 @@ window.addEventListener("load", () => {
 						legend: false,
 						legendCallback: function (chart) {
 							var text = [];
-							text.push('<div class="chartjs-legend" style="flex-wrap: wrap;"><ul class="justify-content-center">');
+							text.push('<div id="piechart-legend" class="chartjs-legend" style="flex-wrap: wrap;"><ul class="justify-content-center">');
 							for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
 								text.push('<li><span style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '">');
 								text.push('</span>');

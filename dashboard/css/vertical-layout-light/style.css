@@ -20823,12 +20823,15 @@ code {
 	text-align: left;
 }
 
+
+
 .home-tab .chartjs-legend ul {
 	list-style: none;
 	padding-left: 0;
 	display: flex;
-	flex-wrap: wrap !important;
+	flex-wrap: wrap;
 	align-items: center;
+	justify-content: right;
 	margin-bottom: 0;
 }
 
@@ -20867,6 +20870,7 @@ code {
 .home-tab .text-light-green {
 	color: #224BCA;
 }
+
 
 /*-------------------------------------------------------------------*/
 /* === Components === */
