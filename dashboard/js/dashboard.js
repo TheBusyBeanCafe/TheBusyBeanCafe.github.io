@@ -250,8 +250,8 @@ window.addEventListener("load", () => {
 									borderWidth: 1.5,
 									fill: true, // 3: no fill
 									pointBorderWidth: 1,
-									pointRadius: [4, 4, 4, 4, 4,4, 4, 4, 4, 4,4, 4, 4],
-									pointHoverRadius: [2, 2, 2, 2, 2,2, 2, 2, 2, 2,2, 2, 2],
+									pointRadius: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+									pointHoverRadius: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
 									pointBackgroundColor: ['#d27842', '#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842','#d27842'],
 									pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
 							}, {
@@ -262,8 +262,8 @@ window.addEventListener("load", () => {
 								borderWidth: 1.5,
 								fill: true, // 3: no fill
 								pointBorderWidth: 1,
-								pointRadius: [0, 0, 0, 4, 0],
-								pointHoverRadius: [0, 0, 0, 2, 0],
+								pointRadius: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+								pointHoverRadius: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
 								pointBackgroundColor: ['#cc9543', '#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543','#cc9543'],
 									pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
 						}]
@@ -322,9 +322,7 @@ window.addEventListener("load", () => {
 											tension: 0.4,
 									}
 							},
-							tooltips: {
-									backgroundColor: 'rgba(31, 59, 179, 1)',
-							}
+							tooltips: {	backgroundColor: 'rgba(210, 202, 193, 0.9)' }
 					}
 					var salesTop = new Chart(graphGradient, {
 							type: 'line',
@@ -397,9 +395,7 @@ window.addEventListener("load", () => {
 								tension: 0.4,
 							}
 						},
-						tooltips: {
-							backgroundColor: 'rgba(31, 59, 179, 1)',
-						}
+						tooltips: {	backgroundColor: 'rgba(210, 202, 193, 0.9)' }
 					}
 					var statusSummaryChart = new Chart(statusSummaryChartCanvas, {
 						type: 'line',
@@ -568,9 +564,7 @@ window.addEventListener("load", () => {
 											tension: 0.4,
 									}
 							},
-							tooltips: {
-									backgroundColor: 'rgba(31, 59, 179, 1)',
-							}
+							tooltips: {	backgroundColor: 'rgba(210, 202, 193, 0.9)' }
 					}
 					var marketingOverview = new Chart(marketingOverviewChart, {
 							type: 'bar',
