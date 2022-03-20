@@ -31,6 +31,8 @@ function getRevenuePerDay(response, period, paid) {
 		if (res[ix] == undefined) res[ix] = [];
 		if (ix < period) res[ix].push(item);
 	}
+
+
 	let revenueArray = new Array(period);
 
 	for (var i = 0; i < res.length; i++) {
@@ -103,6 +105,29 @@ function getItemTypes(response) {
 	return [sorted.map(x => COFFEE_TYPES[x[0]]), sorted.map(x => x[1])]
 }
 
+function getNumberPerDay(response, range, amount) {
+	var paid = new Array(range);
+	var free = new Array(range);
+	let tempDate = new Date();
+
+	for (let item of response) {
+		var ix = Math.floor((tempDate - (new Date(item["date"])).setHours(0, 0, 0, 0)) / amount)
+
+		// PAID
+		if (paid[ix] == undefined) paid[ix] = [];
+		if (ix < range && item["payment"] != 3) paid[ix].push(item);
+
+		// FREE
+		if (free[ix] == undefined) free[ix] = [];
+		if (ix < range && item["payment"] == 3) free[ix].push(item);
+
+	}
+	
+	let paidFinal = paid.map(x => x.length);
+	let freeFinal = free.map(x => x.length);
+	
+	return [paidFinal.reverse(), freeFinal.reverse()];
+}
 
 
 // console.log(getRevenuePerDay(fetchData(), 14));
@@ -141,6 +166,10 @@ window.addEventListener("load", () => {
 
 		coffeeTypes = getItemTypes(value);
 
+		coffeeNumbers = getNumberPerDay(value, 14, 86400000);
+
+		console.log(coffeeNumbers);
+
 		(function($) {
 			'use strict';
 			$(function() {
@@ -176,7 +205,7 @@ window.addEventListener("load", () => {
 									pointHoverRadius: [2, 2, 2, 2, 2,2, 2, 2, 2, 2,2, 2, 2],
 									pointBackgroundColor: ['#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3'],
 									pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
-							},{
+							}, {
 								label: 'Free Coffees Worth',
 								data: freeRevenue,
 								backgroundColor: saleGradientBg2,
@@ -220,7 +249,7 @@ window.addEventListener("load", () => {
 										ticks: {
 											beginAtZero: false,
 											autoSkip: true,
-											maxTicksLimit: 14,
+											maxTicksLimit: 15,
 											fontSize: 10,
 											color:"#6B778C"
 										}
@@ -412,10 +441,10 @@ window.addEventListener("load", () => {
 				if ($("#marketingOverview").length) {
 					var marketingOverviewChart = document.getElementById("marketingOverview").getContext('2d');
 					var marketingOverviewData = {
-							labels: ["JAN","FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+							labels: ["Mon","Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon","Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
 							datasets: [{
-									label: 'Last week',
-									data: [110, 220, 200, 190, 220, 110, 210, 110, 205, 202, 201, 150],
+									label: 'Free Items',
+									data: coffeeNumbers[1],
 									backgroundColor: "#52CDFF",
 									borderColor: [
 											'#52CDFF',
@@ -424,8 +453,8 @@ window.addEventListener("load", () => {
 									fill: true, // 3: no fill
 									
 							},{
-								label: 'This week',
-								data: [215, 290, 210, 250, 290, 230, 290, 210, 280, 220, 190, 300],
+								label: 'Paid Items',
+								data: coffeeNumbers[0],
 								backgroundColor: "#1F3BB3",
 								borderColor: [
 										'#1F3BB3',
@@ -455,8 +484,8 @@ window.addEventListener("load", () => {
 											}
 									}],
 									xAxes: [{
-										stacked: true,
-										barPercentage: 0.35,
+										stacked: false,
+										barPercentage: 0.5,
 										gridLines: {
 												display: false,
 												drawBorder: false,
@@ -464,7 +493,7 @@ window.addEventListener("load", () => {
 										ticks: {
 											beginAtZero: false,
 											autoSkip: true,
-											maxTicksLimit: 12,
+											maxTicksLimit: 15,
 											fontSize: 10,
 											color:"#6B778C"
 										}
