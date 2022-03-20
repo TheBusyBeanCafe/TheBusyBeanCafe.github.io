@@ -1,6 +1,8 @@
 const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
 //const API_URL = "http://127.0.0.1:5000/";
 
+const COFFEE_TYPES = ["Hot Chocolate", "Flat White", "Espresso", "Americano", "Cappuccino", "Long Black", "Piccolo", "Mocha", "Cookie"];
+
 var pass;
 
 async function fetchData() {
@@ -88,6 +90,19 @@ function getDays(period) {
 	return res;
 }
 
+function getItemTypes(response) {
+	const occs = response.map(x => x["index"]).reduce((acc, curr) => (acc[curr] = (acc[curr] || 0) + 1, acc), {});
+
+	var sorted = [];
+	for (var coffee in occs) {
+		sorted.push([coffee, occs[coffee]])
+	}
+
+	sorted.sort((a, b) => b[1] - a[1]);
+
+	return [sorted.map(x => COFFEE_TYPES[x[0]]), sorted.map(x => x[1])]
+}
+
 
 
 // console.log(getRevenuePerDay(fetchData(), 14));
@@ -123,6 +138,8 @@ window.addEventListener("load", () => {
 		document.getElementById("coffees-sold-all").innerHTML = getItemAll(responseJSON);
 
 		dayNames = getDays(14);
+
+		coffeeTypes = getItemTypes(value);
 
 		(function($) {
 			'use strict';
@@ -485,33 +502,27 @@ window.addEventListener("load", () => {
 					document.getElementById('marketing-overview-legend').innerHTML = marketingOverview.generateLegend();
 				}
 		
+
+
+
+
+				/* PIE CHART */
+
+
+
+
 				if ($("#doughnutChart").length) {
 					var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
 					var doughnutPieData = {
 						datasets: [{
-							data: [40, 20, 30, 10],
-							backgroundColor: [
-								"#1F3BB3",
-								"#FDD0C7",
-								"#52CDFF",
-								"#81DADA"
-							],
-							borderColor: [
-								"#1F3BB3",
-								"#FDD0C7",
-								"#52CDFF",
-								"#81DADA"
-							],
+							data: coffeeTypes[1],
+							backgroundColor: ["#968269", "#b4a594", "#d2cac1", "#f1f1f1", "#f0b8b8", "#e67f83", "#d43d51"],
+							borderColor: ["#968269", "#b4a594", "#d2cac1", "#f1f1f1", "#f0b8b8", "#e67f83", "#d43d51"],
 						}],
 			
-						// These labels appear in the legend and in the tooltips when hovering different arcs
-						labels: [
-							'Total',
-							'Net',
-							'Gross',
-							'AVG',
-						]
+						labels: coffeeTypes[0]
 					};
+
 					var doughnutPieOptions = {
 						cutoutPercentage: 50,
 						animationEasing: "easeOutBounce",
@@ -523,7 +534,7 @@ window.addEventListener("load", () => {
 						legend: false,
 						legendCallback: function (chart) {
 							var text = [];
-							text.push('<div class="chartjs-legend"><ul class="justify-content-center">');
+							text.push('<div class="chartjs-legend" style="flex-wrap: wrap;"><ul class="justify-content-center">');
 							for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
 								text.push('<li><span style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '">');
 								text.push('</span>');

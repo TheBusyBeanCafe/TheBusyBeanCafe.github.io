@@ -20827,6 +20827,7 @@ code {
 	list-style: none;
 	padding-left: 0;
 	display: flex;
+	flex-wrap: wrap !important;
 	align-items: center;
 	margin-bottom: 0;
 }
