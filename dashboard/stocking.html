@@ -182,35 +182,88 @@
 																		<th class="center">Status</th>
 																	</tr>
 																	
+																	<th colspan="3" class="table-subdivision">MILKS (bottles)</th>
+
 																	<tr>
-																		<td>Milk (bottles)</td>
-																		<td class="center" id="count-milk">0</td>
+																		<td>Regular Milk</td>
+																		<td class="center" id="count-milk-reg">0</td>
+																		<td class="center"><span class="dot"></span></td>
+																	</tr>
+
+																	<tr>
+																		<td>Lite Milk</td>
+																		<td class="center" id="count-milk-lite">0</td>
+																		<td class="center"><span class="dot"></span></td>
+																	</tr>
+
+																	<tr>
+																		<td>Oat Milk</td>
+																		<td class="center" id="count-milk-oat">0</td>
+																		<td class="center"><span class="dot"></span></td>
+																	</tr>
+
+																	<tr>
+																		<td>Almond Milk</td>
+																		<td class="center" id="count-milk-almond">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 																	
+
+																	<th colspan="3" class="table-subdivision">COFFEE & HOT CHOCOLATE (bags)</th>
+
 																	<tr>
-																		<td>Cookies (boxes)</td>
-																		<td class="center" id="count-cookies">0</td>
-																		<td class="center"><span class="dot"></span></td>
-																	</tr>
-																	
-																	<tr>
-																		<td>Cups (boxes)</td>
-																		<td class="center" id="count-cups">0</td>
-																		<td class="center"><span class="dot"></span></td>
-																	</tr>
-																	
-																	<tr>
-																		<td>Coffee beans (bags)</td>
+																		<td>Coffee Beans</td>
 																		<td class="center" id="count-beans">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 																	
 																	<tr>
-																		<td>H/C Powder (bags)</td>
-																		<td class="center" id="count-hc_powder">0</td>
+																		<td>H/C Powder</td>
+																		<td class="center" id="count-hc-powder">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
+
+
+																	<th colspan="3" class="table-subdivision">COOKIES</th>
+
+
+																	<tr>
+																		<td>Dark Choc Cookies (boxes)</td>
+																		<td class="center" id="count-cookies-dark">0</td>
+																		<td class="center"><span class="dot"></span></td>
+																	</tr>
+
+
+																	<tr>
+																		<td>White Choc Cookies (boxes)</td>
+																		<td class="center" id="count-cookies-white">0</td>
+																		<td class="center"><span class="dot"></span></td>
+																	</tr>
+
+																	<th colspan="3" class="table-subdivision">CUPS (stacks/bags)</th>
+
+																
+																	<tr>
+																		<td>Regular Cups</td>
+																		<td class="center" id="count-cups-regular">0</td>
+																		<td class="center"><span class="dot"></span></td>
+																	</tr>
+
+																	<tr>
+																		<td>Large Cups</td>
+																		<td class="center" id="count-cups-large">0</td>
+																		<td class="center"><span class="dot"></span></td>
+																	</tr>
+
+																	<tr>
+																		<td>Coffee Holders</td>
+																		<td class="center" id="count-coffee-holder">0</td>
+																		<td class="center"><span class="dot"></span></td>
+																	</tr>
+
+
+																	<th colspan="3" class="table-subdivision">OTHER</th>
+
 																	
 																	<tr>
 																		<td>Marshmallows (bags)</td>
@@ -243,12 +296,32 @@
 																			<p class="clean stock-heading-small">Item</p>
 
 																			<select name="current-stock" id="current-stock-use" class="stock-height stock-width-select">
-																				<option value="milk">Milk (bottles)</option>
-																				<option value="cups">Cups (boxes)</option>
-																				<option value="cookies">Cookies (boxes)</option>
-																				<option value="beans">Coffee Beans (bags)</option>
-																				<option value="hc_powder">Hot Chocolate Powder (bags)</option>
-																				<option value="marshmallow">Marshmallows (bags)</option>
+																				<optgroup label="MILKS">
+																					<option value="milk">Regular Milk (bottles)</option>
+																					<option value="milk">Lite Milk (bottles)</option>
+																					<option value="milk">Oat Milk (bottles)</option>
+																					<option value="milk">Almond Milk (bottles)</option>
+																				</optgroup>
+
+																				<optgroup label="COFFEE & HC">
+																					<option value="beans">Coffee Beans (bags)</option>
+																					<option value="hc_powder">Hot Chocolate Powder (bags)</option>
+																				</optgroup>
+
+																				<optgroup label="COOKIES">
+																					<option value="cookies">Dark Choc Cookies (boxes)</option>
+																					<option value="cookies">White Choc Cookies (boxes)</option>
+																				</optgroup>
+
+																				<optgroup label="CUPS">
+																					<option value="cups">Regular Cups (stacks)</option>
+																					<option value="cups">Large Cups (stacks)</option>
+																					<option value="cups">Coffee Holders (stacks)</option>
+																				</optgroup>
+
+																				<optgroup label="OTHER">
+																					<option value="marshmallow">Marshmallows (bags)</option>
+																				</optgroup>
 																			</select>
 																		</div>
 
@@ -289,14 +362,33 @@
 																	<div class="stock-h">
 																		<div class="each-v-container">
 																			<p class="clean stock-heading-small">Item</p>
-
 																			<select name="current-stock" id="current-stock-new" class="stock-height stock-width-select">
-																				<option value="milk">Milk (bottles)</option>
-																				<option value="cups">Cups (boxes)</option>
-																				<option value="cookies">Cookies (boxes)</option>
-																				<option value="beans">Coffee Beans (bags)</option>
-																				<option value="hc_powder">Hot Chocolate Powder (bags)</option>
-																				<option value="marshmallow">Marshmallows (bags)</option>
+																				<optgroup label="MILKS">
+																					<option value="milk">Regular Milk (bottles)</option>
+																					<option value="milk">Lite Milk (bottles)</option>
+																					<option value="milk">Oat Milk (bottles)</option>
+																					<option value="milk">Almond Milk (bottles)</option>
+																				</optgroup>
+
+																				<optgroup label="COFFEE & HC">
+																					<option value="beans">Coffee Beans (bags)</option>
+																					<option value="hc_powder">Hot Chocolate Powder (bags)</option>
+																				</optgroup>
+
+																				<optgroup label="COOKIES">
+																					<option value="cookies">Dark Choc Cookies (boxes)</option>
+																					<option value="cookies">White Choc Cookies (boxes)</option>
+																				</optgroup>
+
+																				<optgroup label="CUPS">
+																					<option value="cups">Regular Cups (stacks)</option>
+																					<option value="cups">Large Cups (stacks)</option>
+																					<option value="cups">Coffee Holders (stacks)</option>
+																				</optgroup>
+
+																				<optgroup label="OTHER">
+																					<option value="marshmallow">Marshmallows (bags)</option>
+																				</optgroup>
 																			</select>
 																		</div>
 
