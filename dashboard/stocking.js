@@ -24,8 +24,9 @@ async function submitStockUse() {
 	const currentStock = json[selectedOption]
 	let newStock = currentStock - val;
 
-	
-	console.log(newStock);
+	console.log("current", currentStock)
+	console.log("entered", val)
+	console.log("newstock", newStock);
 
 	object[selectedOption] = newStock;
 
@@ -37,7 +38,7 @@ async function submitStockUse() {
 		alert("WARNING: stock level less than 0! stock not input")
 	}
 
-	if (!isNaN(val) && newStock >= 0) {
+	if (!isNaN(newStock) && newStock >= 0) {
 		document.getElementById("current-stock-use-count").value = ""
 		fetch(API_URL + "stock", {
 			method: "POST",
@@ -48,6 +49,8 @@ async function submitStockUse() {
 			body: JSON.stringify(object)
 		})
 
+		console.log("posted")
+
 		document.getElementById("count-" + Object.keys(object)[1]).innerHTML = Object.values(object)[1]
 		// ^ this is temporary solution to updating when submit pressed: i couldn't get updStock to update because of async garbage :(
 	}
@@ -56,6 +59,15 @@ async function submitStockUse() {
 
 
 async function submitStockNew() {
+	const response = await fetch(API_URL + "stock", {
+		headers: {
+			'Authorization': 'Basic ' + pass
+		}
+	});
+
+	let json = await response.json();
+
+
 	object = {
 		date: Date.now()
 	};
@@ -69,22 +81,21 @@ async function submitStockNew() {
 
 
 
-	const response = await fetch(API_URL + "stock", {
-		headers: {
-			'Authorization': 'Basic ' + pass
-		}
-	});
-
-	let json = await response.json();
+	
 
 
 
 
-	const currentStock = json[selectedOption];
+	const currentStock = await json[selectedOption];
 
-	let newStock = currentStock + val;
+	let newStock = await currentStock + val;
 
-	console.log(newStock);
+
+
+	console.log("current", currentStock)
+	console.log("entered", val)
+	console.log("newstock", newStock);
+
 
 
 
@@ -94,7 +105,7 @@ async function submitStockNew() {
 
 
 	object.cost = val2
-	if (!isNaN(val) && !isNaN(val2)) {
+	if (!isNaN(newStock) && !isNaN(val2)) {
 		document.getElementById("current-stock-new-count").value = ""
 		document.getElementById("current-stock-new-cost").value = ""
 		
@@ -108,6 +119,8 @@ async function submitStockNew() {
 			},
 			body: JSON.stringify(object)
 		})
+
+		console.log("posted")
 
 		document.getElementById("count-" + Object.keys(object)[1]).innerHTML = Object.values(object)[1];
 	}
