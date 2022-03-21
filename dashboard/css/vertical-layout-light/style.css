@@ -31491,6 +31491,7 @@ div.tagsinput span.tag a {
 	display: flex;
 	flex-direction: row;
 	gap: 18px;
+	flex-wrap: wrap !important;
 }
 
 .submit-button {
