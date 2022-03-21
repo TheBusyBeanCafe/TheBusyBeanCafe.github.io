@@ -59,6 +59,55 @@ async function submitStockUse() {
 }
 
 
+// async function getInventory() {
+// 	const response = await fetch(API_URL + "stock", {
+// 		method: "GET",
+// 		headers: {
+// 			'Content-Type': 'application/json',
+// 			'Authorization': 'Basic ' + pass
+// 		}
+// 	});
+
+// 	responseJSON = await response.json();
+	
+// 	console.log(responseJSON)
+
+// 	return responseJSON;
+	
+// }
+
+// let inventory = getInventory();
+
+// console.log(inventory);
+
+
+
+/* DOESN'T FUCKING WORK AND I DON'T KNOW WHY */
+// const titles = {
+// 	id: "id",
+// 	date: "date",
+
+	
+// 	milk_reg: "regular-milk (bottles)",
+// 	milk_lite: "lite-milk (bottles)",
+// 	milk_oat: "oat-milk (bottles)",
+// 	milk_almond: "almond-milk (bottles)",
+	
+// 	beans: "coffee-beans (bags)",
+// 	hc_powder: "hot-chocolate-powder (bags)",
+
+// 	cookies_dark: "dark chocolate cookies (boxes)",
+// 	cookies_white: "white chocolate cookies (boxes",
+
+// 	cups_regular: "regular cups (stacks)",
+// 	cups_large: "large cups (stacks)",
+// 	coffee_holder: "coffee holders (stacks)",
+
+// 	marshmallows: "marshmallows (bags)",
+	
+// 	cost: "cost"
+// };
+
 
 async function submitStockNew() {
 	const response = await fetch(API_URL + "stock", {
@@ -159,6 +208,11 @@ window.addEventListener("load", () => {
 	console.log('balls')
 	pass = window.sessionStorage.getItem("pass")
 	console.log(pass)
+
+	document.getElementById("export-button").addEventListener('click', () => {
+		console.log("p[resssed")
+	})
+
 	if (pass == null) {
 		console.log("uh o")
 		window.location.href = "/index.html"
