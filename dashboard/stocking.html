@@ -186,25 +186,25 @@
 
 																	<tr>
 																		<td>Regular Milk</td>
-																		<td class="center" id="count-milk-reg">0</td>
+																		<td class="center" id="count-milk_reg">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
 																	<tr>
 																		<td>Lite Milk</td>
-																		<td class="center" id="count-milk-lite">0</td>
+																		<td class="center" id="count-milk_lite">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
 																	<tr>
 																		<td>Oat Milk</td>
-																		<td class="center" id="count-milk-oat">0</td>
+																		<td class="center" id="count-milk_oat">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
 																	<tr>
 																		<td>Almond Milk</td>
-																		<td class="center" id="count-milk-almond">0</td>
+																		<td class="center" id="count-milk_almond">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 																	
@@ -219,7 +219,7 @@
 																	
 																	<tr>
 																		<td>H/C Powder</td>
-																		<td class="center" id="count-hc-powder">0</td>
+																		<td class="center" id="count-hc_powder">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
@@ -229,14 +229,14 @@
 
 																	<tr>
 																		<td>Dark Choc Cookies (boxes)</td>
-																		<td class="center" id="count-cookies-dark">0</td>
+																		<td class="center" id="count-cookies_dark">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
 
 																	<tr>
 																		<td>White Choc Cookies (boxes)</td>
-																		<td class="center" id="count-cookies-white">0</td>
+																		<td class="center" id="count-cookies_white">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
@@ -245,19 +245,19 @@
 																
 																	<tr>
 																		<td>Regular Cups</td>
-																		<td class="center" id="count-cups-regular">0</td>
+																		<td class="center" id="count-cups_regular">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
 																	<tr>
 																		<td>Large Cups</td>
-																		<td class="center" id="count-cups-large">0</td>
+																		<td class="center" id="count-cups_large">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
 																	<tr>
 																		<td>Coffee Holders</td>
-																		<td class="center" id="count-coffee-holder">0</td>
+																		<td class="center" id="count-coffee_holder">0</td>
 																		<td class="center"><span class="dot"></span></td>
 																	</tr>
 
@@ -288,7 +288,7 @@
 																<div class="card-body">
 																	<div>
 																		<h4 class="card-title card-title-dash">Record Stock Usage</h4>
-																		<p class="card-subtitle card-subtitle-dash">Record the CURRENT stock level (the date is set to the date of entry)</p>
+																		<p class="card-subtitle card-subtitle-dash">Record the amount of the item USED up till date of entry</p>
 																	</div>
 																	
 																	<div class="stock-h">
@@ -297,10 +297,10 @@
 
 																			<select name="current-stock" id="current-stock-use" class="stock-height stock-width-select">
 																				<optgroup label="MILKS">
-																					<option value="milk">Regular Milk (bottles)</option>
-																					<option value="milk">Lite Milk (bottles)</option>
-																					<option value="milk">Oat Milk (bottles)</option>
-																					<option value="milk">Almond Milk (bottles)</option>
+																					<option value="milk_reg">Regular Milk (bottles)</option>
+																					<option value="milk_lite">Lite Milk (bottles)</option>
+																					<option value="milk_oat">Oat Milk (bottles)</option>
+																					<option value="milk_almond">Almond Milk (bottles)</option>
 																				</optgroup>
 
 																				<optgroup label="COFFEE & HC">
@@ -309,14 +309,14 @@
 																				</optgroup>
 
 																				<optgroup label="COOKIES">
-																					<option value="cookies">Dark Choc Cookies (boxes)</option>
-																					<option value="cookies">White Choc Cookies (boxes)</option>
+																					<option value="cookies_dark">Dark Choc Cookies (boxes)</option>
+																					<option value="cookies_white">White Choc Cookies (boxes)</option>
 																				</optgroup>
 
 																				<optgroup label="CUPS">
-																					<option value="cups">Regular Cups (stacks)</option>
-																					<option value="cups">Large Cups (stacks)</option>
-																					<option value="cups">Coffee Holders (stacks)</option>
+																					<option value="cups_regular">Regular Cups (stacks)</option>
+																					<option value="cups_large">Large Cups (stacks)</option>
+																					<option value="coffee_holder">Coffee Holders (stacks)</option>
 																				</optgroup>
 
 																				<optgroup label="OTHER">
@@ -356,7 +356,7 @@
 																<div class="card-body">
 																	<div>
 																		<h4 class="card-title card-title-dash">Record New Stock</h4>
-																		<p class="card-subtitle card-subtitle-dash">Record the PURCHASED stock (the date is set to the date of entry)</p>
+																		<p class="card-subtitle card-subtitle-dash">Record the ADDITIONAL stock purchased (purchase date is set to date of entry)</p>
 																	</div>
 																	
 																	<div class="stock-h">
@@ -364,10 +364,10 @@
 																			<p class="clean stock-heading-small">Item</p>
 																			<select name="current-stock" id="current-stock-new" class="stock-height stock-width-select">
 																				<optgroup label="MILKS">
-																					<option value="milk">Regular Milk (bottles)</option>
-																					<option value="milk">Lite Milk (bottles)</option>
-																					<option value="milk">Oat Milk (bottles)</option>
-																					<option value="milk">Almond Milk (bottles)</option>
+																					<option value="milk_reg">Regular Milk (bottles)</option>
+																					<option value="milk_lite">Lite Milk (bottles)</option>
+																					<option value="milk_oat">Oat Milk (bottles)</option>
+																					<option value="milk_almond">Almond Milk (bottles)</option>
 																				</optgroup>
 
 																				<optgroup label="COFFEE & HC">
@@ -376,14 +376,14 @@
 																				</optgroup>
 
 																				<optgroup label="COOKIES">
-																					<option value="cookies">Dark Choc Cookies (boxes)</option>
-																					<option value="cookies">White Choc Cookies (boxes)</option>
+																					<option value="cookies_dark">Dark Choc Cookies (boxes)</option>
+																					<option value="cookies_white">White Choc Cookies (boxes)</option>
 																				</optgroup>
 
 																				<optgroup label="CUPS">
-																					<option value="cups">Regular Cups (stacks)</option>
-																					<option value="cups">Large Cups (stacks)</option>
-																					<option value="cups">Coffee Holders (stacks)</option>
+																					<option value="cups_regular">Regular Cups (stacks)</option>
+																					<option value="cups_large">Large Cups (stacks)</option>
+																					<option value="coffee_holder">Coffee Holders (stacks)</option>
 																				</optgroup>
 
 																				<optgroup label="OTHER">

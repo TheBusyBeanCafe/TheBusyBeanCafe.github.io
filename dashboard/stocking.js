@@ -1,17 +1,43 @@
 const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
+// const API_URL = "http://127.0.0.1:5000/";
 
 var pass;
 
 
-function submitStockUse() {
-	console.log('hi')
+async function submitStockUse() {
 	object = {
 		date: Date.now()
 	};
+	
+	let selectedOption = document.getElementById("current-stock-use").selectedOptions[0].value
 	let val = document.getElementById("current-stock-use-count").valueAsNumber
-	object[document.getElementById("current-stock-use").selectedOptions[0].value] = val
-	if (!isNaN(val)) {
-		console.log(val)
+
+	
+	const response = await fetch(API_URL + "stock", {
+		headers: {
+			'Authorization': 'Basic ' + pass
+		}
+	});
+
+	let json = await response.json();
+	
+	const currentStock = json[selectedOption]
+	let newStock = currentStock - val;
+
+	
+	console.log(newStock);
+
+	object[selectedOption] = newStock;
+
+
+
+
+	if (newStock < 0) {
+		document.getElementById("current-stock-use-count").value = ""
+		alert("WARNING: stock level less than 0! stock not input")
+	}
+
+	if (!isNaN(val) && newStock >= 0) {
 		document.getElementById("current-stock-use-count").value = ""
 		fetch(API_URL + "stock", {
 			method: "POST",
@@ -21,25 +47,59 @@ function submitStockUse() {
 			},
 			body: JSON.stringify(object)
 		})
-		console.log(object)
+
+		document.getElementById("count-" + Object.keys(object)[1]).innerHTML = Object.values(object)[1]
+		// ^ this is temporary solution to updating when submit pressed: i couldn't get updStock to update because of async garbage :(
 	}
 }
 
 
 
-function submitStockNew() {
-	console.log('hi')
+async function submitStockNew() {
 	object = {
 		date: Date.now()
 	};
 	let val = document.getElementById("current-stock-new-count").valueAsNumber
 	let val2 = document.getElementById("current-stock-new-cost").valueAsNumber
 	
-	object[document.getElementById("current-stock-new").selectedOptions[0].value] = val
+	let selectedOption = document.getElementById("current-stock-new").selectedOptions[0].value;
+
+	console.log(selectedOption);
+
+
+
+
+	const response = await fetch(API_URL + "stock", {
+		headers: {
+			'Authorization': 'Basic ' + pass
+		}
+	});
+
+	let json = await response.json();
+
+
+
+
+	const currentStock = json[selectedOption];
+
+	let newStock = currentStock + val;
+
+	console.log(newStock);
+
+
+
+	object[selectedOption] = newStock;
+
+	console.log(object);
+
+
 	object.cost = val2
 	if (!isNaN(val) && !isNaN(val2)) {
 		document.getElementById("current-stock-new-count").value = ""
 		document.getElementById("current-stock-new-cost").value = ""
+		
+
+
 		fetch(API_URL + "stock", {
 			method: "POST",
 			headers: {
@@ -48,19 +108,22 @@ function submitStockNew() {
 			},
 			body: JSON.stringify(object)
 		})
+
+		document.getElementById("count-" + Object.keys(object)[1]).innerHTML = Object.values(object)[1];
 	}
 }
 
 async function updStock() {
+	// console.log("updated stock?")
 	const resp = await fetch(API_URL + "stock", {
 		headers: {
 			'Authorization': 'Basic ' + pass
 		}
 	});
 	let json = await resp.json()
-	console.log(json)
+	// console.log(json)
 	for (var item in json) {
-		console.log(item)
+		// console.log(item)
 		document.getElementById("count-" + item).innerText = json[item]
 	}
 }
