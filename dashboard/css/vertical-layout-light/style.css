@@ -31332,6 +31332,12 @@ div.tagsinput span.tag a {
 	padding: 0px !important;
 }
 
+@media (max-width: 1400px) {
+	.responsive-display {
+		display: none;
+	}
+}
+
 .contiguous-v-flex-2 {
 	display: flex;
 	flex-direction: column;
@@ -31493,4 +31499,8 @@ div.tagsinput span.tag a {
 	padding-left: 1.125em;
 	max-height: 1.75em !important;
 	
+}
+
+.left-margin {
+	margin-left: 20px;
 }

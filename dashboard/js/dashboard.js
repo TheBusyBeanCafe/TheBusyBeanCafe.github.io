@@ -63,7 +63,9 @@ function getCoffeesSold(response, days) {
 }
 
 function getItemAll(response) {
-	return response.length;
+	const curYear = new Date().getFullYear()
+
+	return response.filter(x => (new Date(x["date"]).getFullYear()) == curYear).length;
 }
 
 function getRevenueAll(response) {
@@ -176,6 +178,67 @@ function getAdditionalItems(response) {
 }
 
 
+
+
+
+function convertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+            if (line != '') line += ','
+
+            line += array[i][index];
+        }
+
+        str += line + '\r\n';
+    }
+
+    return str;
+}
+
+
+
+function exportCSVFile(headers, items, fileTitle) {
+    if (headers) {
+        items.unshift(headers);
+    }
+
+    // Convert Object to JSON
+    var jsonObject = JSON.stringify(items);
+
+    var csv = this.convertToCSV(jsonObject);
+
+    var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, exportedFilenmae);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", exportedFilenmae);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 // console.log(getRevenuePerDay(fetchData(), 14));
 
 
@@ -221,6 +284,24 @@ window.addEventListener("load", () => {
 		const additionalItems = getAdditionalItems(value);
 
 		document.getElementById("items-sold-fortnight").innerHTML = getCoffeesSold(value, 14);	
+
+		const titles = {
+			id: "id",
+			index: "item-index",
+			large: "large",
+			date: "date",
+			
+			sugar: "sugar",
+
+			milk: "milk-type",
+			payment: "payment-type",
+			syrup: "syrup-type"
+			
+		};
+
+		document.getElementById("export-button").addEventListener("click", () => {
+			exportCSVFile(titles, value, "thebusybeancafe-data-export");
+		});
 
 		console.log(coffeeNumbers);
 
