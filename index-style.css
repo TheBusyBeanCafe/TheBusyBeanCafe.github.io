@@ -29,6 +29,8 @@ h1 {
 	height: 100vh;
 }
 
+
+
 .top-vflex {
 	display: flex;
 	flex-direction: column;
@@ -104,6 +106,7 @@ h1 {
 }
 
 
+
 .stats-rectangle {
 	width: 26%;
 	float: left;
@@ -112,6 +115,84 @@ h1 {
 .shift-rectangle {
 	width: 61%;
 	float: right;
+}
+
+@media (max-width: 650px) {
+	.stats-rectangle {
+		width: calc(100% - 10vw);
+		height: 40vh;
+		margin-left: 5vw;
+		margin-right: 5vw;
+		margin-top: 3vh;
+		border-radius: 18px;
+		background-color: #F3F3F3;
+		box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.15);
+	}
+
+	
+	.shift-rectangle {
+		width: calc(100% - 10vw);
+		height: 25vh;
+		margin-left: 5vw;
+		margin-right: 5vw;
+		margin-top: 3vh;
+		border-radius: 18px;
+		background-image: url("./images/coffee.png");
+		background-size: 120%;
+		background-color:  #F3F3F3;
+		box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.15);
+	}
+
+	.float-container {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.arrow {
+		display: none;
+	}
+
+
+	.stats-text {
+		margin: 0px;
+		position: relative;
+		text-align: center;
+		top: 40%;
+		transform: translate(0, -2vw);
+		font-size: 4vh;
+		font-family: visbyround-medium;
+	}
+	
+	.shift-heading {
+		margin: 0px;
+		position: relative;
+		text-align: left;
+		padding-left: 30px;
+		top: 40%;
+		font-size: 4.4vh;
+		font-family: visbyround-medium;
+	}
+	
+	.shift-sub {
+		margin: 0px;
+		position: relative;
+		text-align: left;
+		padding-left: 30px;
+		top: 40%;
+		font-size: 2vh;
+		font-family: visbyround-medium;
+		color: #777;
+	}
+
+	h1 {
+		color: black;
+		margin: 0px;
+		text-align: left;
+		padding-left: 5vw;
+		padding-top: 14vh;
+		font-family: visbyround-regular;
+		font-size: 4.5vh;
+	}
 }
 
 
