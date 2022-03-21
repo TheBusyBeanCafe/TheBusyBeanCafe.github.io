@@ -25864,7 +25864,6 @@ dl li {
 	border: 1px solid #dee2e6;
 	border-top: 0;
 	padding: 2rem 1rem;
-	text-align: justify;
 }
 
 .tab-content.tab-content-vertical {
@@ -31570,4 +31569,11 @@ div.tagsinput span.tag a {
 		flex-direction: column;
 		gap: 20px
 	}
+}
+
+#doughnutChart {
+	margin-right: 0px !important;
+	margin-left: 0px !important;
+	padding-right: 0px !important;
+	padding-left: 0px !important;
 }
