@@ -125,6 +125,17 @@ async function updStock() {
 	for (var item in json) {
 		// console.log(item)
 		document.getElementById("count-" + item).innerText = json[item]
+		
+		if (json[item] <= 1) {
+			document.getElementById("dot-" + item).style.backgroundColor = "#e53935";
+		} else if (json[item] >= 2 && json[item] <= 5) {
+			document.getElementById("dot-" + item).style.backgroundColor = "#fbc02d";
+		} else {
+			document.getElementById("dot-" + item).style.backgroundColor = "#388e3c";
+		}
+
+		console.log(item);
+		console.log(json[item])
 	}
 }
 
