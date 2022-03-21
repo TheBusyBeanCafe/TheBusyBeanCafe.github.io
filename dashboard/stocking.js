@@ -51,6 +51,8 @@ async function submitStockUse() {
 
 		console.log("posted")
 
+		console.log(object);
+
 		document.getElementById("count-" + Object.keys(object)[1]).innerHTML = Object.values(object)[1]
 		// ^ this is temporary solution to updating when submit pressed: i couldn't get updStock to update because of async garbage :(
 	}

@@ -67,7 +67,10 @@ function getItemAll(response) {
 }
 
 function getRevenueAll(response) {
-	return response.map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
+	const curYear = new Date().getFullYear()
+
+
+	return response.filter(x=> (new Date(x["date"]).getFullYear()) == curYear).map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
 }
 
 function getRevenue(response) {
