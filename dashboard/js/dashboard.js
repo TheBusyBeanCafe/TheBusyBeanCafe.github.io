@@ -28,9 +28,18 @@ function getRevenuePerDay(response, period, paid) {
 	for (let item of response) {
 		var ix = Math.floor((tempDate - (new Date(item["date"])).setHours(0, 0, 0, 0)) / 86400000)
 
-		if (res[ix] == undefined) res[ix] = [];
-		if (ix < period) res[ix].push(item);
+
+
+		if (ix < period) {
+			if (res[ix] == undefined) {
+				res[ix] = [];
+			} else {
+				res[ix].push(item)
+			}
+		}
 	}
+
+	console.log(res);
 
 
 	let revenueArray = new Array(period);
@@ -38,14 +47,17 @@ function getRevenuePerDay(response, period, paid) {
 	for (var i = 0; i < res.length; i++) {
 		if (res[i] !== undefined) {
 			if (paid) {
-				revenueArray[i] = (res[i].map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur)));	
+				// revenueArray[i] = (res[i].map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur, 0)));	
+
+				revenueArray[i] = (res[i].map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5))).reduce((prev, cur) => prev + cur, 0);
 			} else {
-				revenueArray[i] = (res[i].map(x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur)));
+				revenueArray[i] = (res[i].map(x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur, 0)));
 			}
 			
 		} else {
 			revenueArray[i] = 0;
 		}
+
 	}
 
 	revenueArray.reverse()
@@ -119,13 +131,21 @@ function getNumberPerDay(response, range, amount) {
 	for (let item of response) {
 		var ix = Math.floor((tempDate - (new Date(item["date"])).setHours(0, 0, 0, 0)) / amount)
 
-		// PAID
-		if (paid[ix] == undefined) paid[ix] = [];
-		if (ix < range && item["payment"] != 3) paid[ix].push(item);
+		if (ix < range) {
+			if (paid[ix] == undefined) {
+				paid[ix] = [];
+			} else if (item["payment"] != 3) {
+				paid[ix].push(item);
+			} 
 
-		// FREE
-		if (free[ix] == undefined) free[ix] = [];
-		if (ix < range && item["payment"] == 3) free[ix].push(item);
+			if (free[ix] == undefined) {
+				free[ix] = [];
+			} else if (item["payment"] == 3) {
+				free[ix].push(item);
+			}
+		}
+
+		// PAID
 
 	}
 	
@@ -141,16 +161,19 @@ function getPercentageEftpos(response) {
 	const eftposCount = afterEftposIntroduction.filter(x => x["payment"] == 1).length
 	const totalCount = afterEftposIntroduction.filter(x => x["payment"] != 1).length
 	
-	return (eftposCount / totalCount)
+	let res = (eftposCount / totalCount).toFixed(2);
+
+
+
+	return res;
 }
 
 function getPercentageLarge(response) {
 	const largeOrders = response.filter(x => x["large"]).length
 	const totalNum = response.length
 
-	console.log(largeOrders, totalNum)
 
-	return largeOrders / totalNum
+	return (largeOrders / totalNum).toFixed(2);
 }
 
 function getAdditionalItems(response) {
@@ -161,18 +184,24 @@ function getAdditionalItems(response) {
 	for (let item of response) {
 		var ix = Math.floor((tempDate - (new Date(item["date"])).setHours(0, 0, 0, 0)) / 86400000)
 
-		// PAID
-		if (res[ix] == undefined) res[ix] = [];
-		if (ix < 14 && item["payment"] != 3) res[ix].push(item);
+		
+		if (ix < 14) {
+			if (res[ix] == undefined) {
+				res[ix] = [];
+			} else {
+				res[ix].push(item);
+			}
+		}
 	}
 
-	final = res.map(y => y.filter(x => (x["milk"] != 0 && x["milk"] != null) || x["sugar"] != 0 || x["syrup"] != null))
+	final = res.map(y => y.filter(x => (x["milk"] != 0 && x["milk"] != null) || x["sugar"] != 0 || x["syrup"] != null).length);
 
-	count = final.reduce((prev, cur) => prev + cur.length, 0)
+	final = final.filter(x => x != undefined)
 
-	final = final.map(x => x.length)
+	count = final.reduce((prev, cur) => prev + cur, 0)
 
-	console.log(final)
+
+
 
 	return [count, final]
 }
@@ -239,13 +268,10 @@ function exportCSVFile(headers, items, fileTitle) {
 
 
 
-// console.log(getRevenuePerDay(fetchData(), 14));
 
 
 pass = window.sessionStorage.getItem("pass")
-console.log(pass)
 if (pass == null) {
-	console.log("uh o")
 	window.location.href = "../index.html"
 }
 
@@ -259,7 +285,6 @@ window.addEventListener("load", () => {
 	var freeRevenue;
 	var dayNames;
 
-	console.log(fetchedData);
 
 
 	fetchedData.then(value => {
@@ -303,7 +328,6 @@ window.addEventListener("load", () => {
 			exportCSVFile(titles, value, "thebusybeancafe-data-export");
 		});
 
-		console.log(coffeeNumbers);
 
 		(function($) {
 			'use strict';
@@ -391,7 +415,6 @@ window.addEventListener("load", () => {
 								var text = [];
 								text.push('<div class="chartjs-legend"><ul>');
 								for (var i = 0; i < chart.data.datasets.length; i++) {
-									console.log(chart.data.datasets[i]); // see what's inside the obj.
 									text.push('<li>');
 									text.push('<span style="background-color:' + chart.data.datasets[i].borderColor + '">' + '</span>');
 									text.push(chart.data.datasets[i].label);
@@ -524,7 +547,7 @@ window.addEventListener("load", () => {
 			
 					bar.text.style.fontSize = '0rem';
 					bar.animate(eftposPercentage); // Number from 0.0 to 1.0
-					document.getElementById("eftposPercent").innerHTML = eftposPercentage.toFixed(4)*100 + "%"
+					document.getElementById("eftposPercent").innerHTML = eftposPercentage*100 + "%"
 				}
 		
 				if ($('#visitperday').length) {
@@ -564,7 +587,7 @@ window.addEventListener("load", () => {
 			
 					bar.text.style.fontSize = '0rem';
 					bar.animate(largePercentage); // Number from 0.0 to 1.0
-					document.getElementById("largePercent").innerHTML = largePercentage.toFixed(4)*100 + "%"
+					document.getElementById("largePercent").innerHTML = largePercentage*100 + "%"
 				}
 		
 				if ($("#marketingOverview").length) {
@@ -633,7 +656,6 @@ window.addEventListener("load", () => {
 								var text = [];
 								text.push('<div class="chartjs-legend"><ul>');
 								for (var i = 0; i < chart.data.datasets.length; i++) {
-									console.log(chart.data.datasets[i]); // see what's inside the obj.
 									text.push('<li class="text-muted text-small">');
 									text.push('<span style="background-color:' + chart.data.datasets[i].borderColor + '">' + '</span>');
 									text.push(chart.data.datasets[i].label);
@@ -739,16 +761,4 @@ window.addEventListener("load", () => {
 			});
 		})(jQuery);
 	})
-
-	
-
-		
-
-	
 })
-
-
-
-
-// console.log(response);
-
