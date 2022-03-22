@@ -16727,6 +16727,10 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 	color: #d27842 !important;
 }
 
+.text-info-red {
+	color: #d43d51 !important;
+}
+
 .text-warning {
 	--bs-text-opacity: 1;
 	color: rgba(var(--bs-warning-rgb), var(--bs-text-opacity)) !important;
