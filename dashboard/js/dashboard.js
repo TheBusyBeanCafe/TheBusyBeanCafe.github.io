@@ -593,7 +593,7 @@ window.addEventListener("load", () => {
 				if ($("#marketingOverview").length) {
 					var marketingOverviewChart = document.getElementById("marketingOverview").getContext('2d');
 					var marketingOverviewData = {
-							labels: ["Mon","Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon","Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+							labels: dayNames,
 							datasets: [{
 									label: 'Free Items',
 									data: coffeeNumbers[1],
