@@ -377,22 +377,22 @@ input[type=password] {
 		display: flex;
 		flex-direction: column;
 		
-		padding: 2em;
-		width: 60vw;
-		height: 75vh;
+		padding: 2.8vh;
+		width: 70vw;
+		height: 45vh;
 	}
 
 	#pass-title {
-		font-size: 2em;
+		font-size: 4.4vh;
 		font-family: visbyround-medium;
 	}
 
 	#pass-done {
-		font-size: 1.8em;
+		font-size: 4.0vh;
 		font-family: visbyround-regular;
 	}
 
-	
+
 }
 
 
