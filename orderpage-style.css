@@ -378,9 +378,21 @@ input[type=password] {
 		flex-direction: column;
 		
 		padding: 2em;
-		width: 80vw;
-		height: 90vh;
+		width: 60vw;
+		height: 75vh;
 	}
+
+	#pass-title {
+		font-size: 2em;
+		font-family: visbyround-medium;
+	}
+
+	#pass-done {
+		font-size: 1.8em;
+		font-family: visbyround-regular;
+	}
+
+	
 }
 
 
