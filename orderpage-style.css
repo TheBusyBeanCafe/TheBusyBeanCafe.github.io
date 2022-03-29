@@ -369,6 +369,18 @@ input[type=password] {
 	height: 18vh;
 }
 
+
+#pass-title {
+	font-size: 2.75vw;
+	font-family: visbyround-medium;
+}
+
+#pass-done {
+	font-size: 1.8vw;
+	font-family: "Roboto Mono";
+	font-weight: 600;
+}
+
 @media (max-width: 650px) {
 	#pass-modal-content {
 		background-color: #EBEBEB;
@@ -396,16 +408,7 @@ input[type=password] {
 }
 
 
-#pass-title {
-	font-size: 2.75vw;
-	font-family: visbyround-medium;
-}
 
-#pass-done {
-	font-size: 1.8vw;
-	font-family: "Roboto Mono";
-	font-weight: 600;
-}
 
 
 .dialog-title {
