@@ -88,11 +88,35 @@ function getRevenueAll(response) {
 }
 
 function getRevenue(response) {
-	return getRange(response, 604_800_000).map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
+	console.log(response);
+	OLD_PRICING = (x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5));
+
+	console.log(getRange(response, 604_800_000));
+	// NEW_PRICING = (
+	// 	x => (x["payment"] != 3) * 
+	// 	((x["index"] == 0 ? )
+		
+		
+	// 	)
+		
+	// )
+
+	const rangeResponse = getRange(response, 604_800_000);
+	if (rangeResponse.length == 0) {
+		return 0;
+	} else {
+		return rangeResponse.map(OLD_PRICING).reduce((prev, cur) => (prev + cur));
+	}
 }
 
 function getFreeCoffeeAmount(response) {
-	return getRange(response, 604_800_000).map(x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
+	const rangeResponse = getRange(response, 604_800_000);
+
+	if (rangeResponse.length == 0) {
+		return 0;
+	} else {
+		return rangeResponse.map(x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
+	}
 }
 
 function getDays(period) {
