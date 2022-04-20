@@ -718,8 +718,8 @@ window.addEventListener("load", () => {
 					var doughnutPieData = {
 						datasets: [{
 							data: coffeeTypes[1],
-							backgroundColor: ["#968269", "#b4a594", "#d2cac1", "#f1f1f1", "#f0b8b8", "#e67f83", "#d43d51"],
-							borderColor: ["#968269", "#b4a594", "#d2cac1", "#f1f1f1", "#f0b8b8", "#e67f83", "#d43d51"],
+							backgroundColor: ["#968269", "#b4a594", "#d2cac1", "#f1f1f1", "#f0b8b8", "#e67f83", "#d43d51", "#B6283B"],
+							borderColor: ["#968269", "#b4a594", "#d2cac1", "#f1f1f1", "#f0b8b8", "#e67f83", "#d43d51", "#B6283B"],
 						}],
 			
 						labels: coffeeTypes[0]
