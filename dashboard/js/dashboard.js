@@ -307,24 +307,22 @@ window.addEventListener("load", () => {
 
 	var dailyRevenue;
 	var freeRevenue;
+
 	var dayNames;
+	var coffeeNumbers;
 
 
 
 	fetchedData.then(value => {
-		dailyRevenue = getRevenuePerDay(value, 14, true);
-		freeRevenue = getRevenuePerDay(value, 14, false);
 		document.getElementById("revenue-week").innerHTML = "$" + getRevenue(value);	
 		document.getElementById("coffees-sold-week").innerHTML = getCoffeesSold(value, 7);	
 		document.getElementById("free-week").innerHTML = "$" + getFreeCoffeeAmount(value);
 		document.getElementById("revenue-all").innerHTML = "$" + getRevenueAll(value);
 		document.getElementById("coffees-sold-all").innerHTML = getItemAll(value);
 
-		const dayNames = getDays(14);
+		
 
 		const coffeeTypes = getItemTypes(value);
-
-		const coffeeNumbers = getNumberPerDay(value, 14, 86400000);
 
 		const eftposPercentage = getPercentageEftpos(value);
 
@@ -332,7 +330,29 @@ window.addEventListener("load", () => {
 
 		const additionalItems = getAdditionalItems(value);
 
-		document.getElementById("items-sold-fortnight").innerHTML = getCoffeesSold(value, 14);	
+		document.getElementById("items-sold-fortnight").innerHTML = getCoffeesSold(value, 14);
+
+
+		dayNames = getDays(14);
+		dailyRevenue = getRevenuePerDay(value, 14, true);
+		freeRevenue = getRevenuePerDay(value, 14, false);
+		coffeeNumbers = getNumberPerDay(value, 14, 86400000);
+
+		/* dfdfdfdf
+		let selectedOption = document.getElementById("time-frame-dropdown").selectedOptions[0].value
+
+		if (selectedOption == "fortnight") {
+			
+		} else if (selectedOption == "week") {
+
+		} else if (selectedOption == "term") {
+
+		} else { // year
+
+		}
+		*/
+
+
 
 		const titles = {
 			id: "id",
@@ -467,7 +487,7 @@ window.addEventListener("load", () => {
 				if ($("#status-summary").length) {
 					var statusSummaryChartCanvas = document.getElementById("status-summary").getContext('2d');;
 					var statusData = {
-						labels: ["SUN", "MON", "TUE", "WED", "THU", "FRI"],
+						labels: [" ", " ", " ", " ", " ", " ", " "], // keep this!!! this is needed to specify number of entries
 						datasets: [{
 							label: '# of Votes',
 							data: additionalItems[1],
@@ -476,7 +496,7 @@ window.addEventListener("load", () => {
 								'#d43d51',
 							],
 							borderWidth: 2,
-							fill: false, // 3: no fill
+							fill: false,
 							pointBorderWidth: 0,
 							pointRadius: [0, 0, 0, 0, 0, 0],
 							pointHoverRadius: [0, 0, 0, 0, 0, 0],
