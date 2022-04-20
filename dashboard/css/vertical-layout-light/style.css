@@ -25696,6 +25696,10 @@ dl li {
 	padding: .75rem 1.5rem;
 }
 
+.nav-link-selected {
+	background: #fff;
+}
+
 @media (max-width: 767px) {
 	.nav-tabs .nav-link {
 		padding: .75rem .5rem;
