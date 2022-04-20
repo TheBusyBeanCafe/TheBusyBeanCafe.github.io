@@ -12892,7 +12892,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 	font-family: "visbyround-bold";
 	font-size: 1.2rem;
 	padding-top: 0.37rem;
-	color: #968269;
+	color: #000;
 }
 
 .navbar-nav {
@@ -31584,4 +31584,9 @@ div.tagsinput span.tag a {
 	margin-left: 0px !important;
 	padding-right: 0px !important;
 	padding-left: 0px !important;
+}
+
+.override-justify {
+	display: inline !important;
+	border: 0px !important;
 }

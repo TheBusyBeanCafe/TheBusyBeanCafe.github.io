@@ -227,7 +227,7 @@ function getAdditionalItems(response) {
 
 
 
-	return [count, final]
+	return [count, final.reverse()]
 }
 
 
