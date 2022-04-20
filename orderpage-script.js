@@ -33,7 +33,6 @@ async function initpreorder() {
 			}
 		});
 	g_api_key = await response.json()
-	console.log(g_api_key)
 
 
 	updateSheetTotalRows()
@@ -57,25 +56,11 @@ async function initpreorder() {
 		}
 
 		let currentShift = getCurrentShift(todayDate);
-		console.log(currentShift);
 
-
-		console.log(json.values)
 
 		topc = json.values.filter(x => ((new Date(x[x[2] == "" ? 0 : 2])).setHours(0, 0, 0, 0).valueOf() === todayDate.setHours(0, 0, 0, 0).valueOf()) && x[3] == currentShift)
 
 
-		for (x of json.values) {
-
-			console.log(x[0])
-			console.log(x[2])
-			console.log(todayDate);
-			console.log(new Date(x[x[2] == "" ? 0 : 2]));
-
-			console.log(new Date(x[x[2] == "" ? 0 : 2]).setHours(0, 0, 0, 0) === todayDate.setHours(0, 0, 0, 0))
-		}
-
-		console.log(topc)
 
 
 
@@ -216,7 +201,7 @@ function postCoffee(coffee) {
 
 function diagButtonClick(elem) {
 	var optional = elem.getAttribute("data-button-optional")
-	console.log(optional)
+
 	var type = elem.getAttribute("data-button-group");
 	if (optional && elem.classList.contains("dialog-button-selected")) {
 		elem.classList.remove("dialog-button-selected")
@@ -318,7 +303,6 @@ function doneclicked() {
 		});
 	}
 
-	console.log(dialogShownObj)
 
 	updCurTransList()
 }
@@ -363,7 +347,7 @@ function coffeeClicked(idx) {
 function sugarClicked() {
 	sugarCount += 1
 	
-	console.log(sugarCount)
+
 
 	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S<span style="font-size: 2.4vh">x${sugarCount}</span></h2>`
 
@@ -375,7 +359,7 @@ function sugarClicked() {
 function sugarMinused() {
 	sugarCount = Math.max(sugarCount-1, 0)
 	
-	console.log(sugarCount)
+
 
 	document.getElementById("sugar-title").innerHTML = `<h2 id="sugar-title" class="button-short-name">S<span style="font-size: 2.4vh">x${sugarCount}</span></h2>`
 
@@ -439,7 +423,6 @@ function displayData(data) {
 	function addClickListener() {
 		for (let i = 0; i <= data.length; i++) {
 			if (i == 8) { // cookie
-				console.log("cookie");
 				let coffeeButton = document.getElementById("hstack-item" + i);
 				
 				coffeeButton.style.cursor = 'pointer';
@@ -447,7 +430,6 @@ function displayData(data) {
 					coffeeClicked(i)
 				}
 			} else if (i == 9) {  //extras menu
-				console.log("extras menu");
 				
 			} else {
 				let coffeeButton = document.getElementById("hstack-item" + i);
@@ -601,7 +583,6 @@ function completeOrder(idx) {
 
 	const orderId = "order" + idx
 
-	console.log(orderId);
 
 	document.getElementById(orderId).style.background = (doneOrders[idx] ? "#A5D6A7" : "white");
 }
@@ -633,7 +614,6 @@ function editOrder(idx) {
 	if (dialogShownObj.syrup !== null ) {
 		document.getElementById("syrup-container").querySelectorAll("[data-button-group='syrup']")[dialogShownObj.syrup].classList.add("dialog-button-selected");
 	}
-	console.log(dialogShownObj.payment)
 	// -1 because 0 is cash
 	document.getElementById("modal-hstack-small2-left").querySelectorAll("[data-button-group='payment']")[dialogShownObj.payment - 1].classList.add("dialog-button-selected");
 	
@@ -699,11 +679,8 @@ function confirmCancelEnd() {
 
 
 window.addEventListener("load", () => {
-	console.log('balls')
 	pass = window.sessionStorage.getItem("pass")
-	console.log(pass)
 	if (pass == null) {
-		console.log("uh o")
 		window.location.href = "/index.html"
 	} else {
 		initpreorder()

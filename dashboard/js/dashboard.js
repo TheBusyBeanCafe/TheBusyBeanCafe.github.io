@@ -39,7 +39,6 @@ function getRevenuePerDay(response, period, paid) {
 		}
 	}
 
-	console.log(res);
 
 
 	let revenueArray = new Array(period);
@@ -88,10 +87,8 @@ function getRevenueAll(response) {
 }
 
 function getRevenue(response) {
-	console.log(response);
 	OLD_PRICING = (x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5));
 
-	console.log(getRange(response, 604_800_000));
 	// NEW_PRICING = (
 	// 	x => (x["payment"] != 3) * 
 	// 	((x["index"] == 0 ? )
@@ -302,9 +299,6 @@ if (pass == null) {
 let fetchedData = fetchData();
 
 window.addEventListener("load", () => {
-
-
-
 	var dailyRevenue;
 	var freeRevenue;
 

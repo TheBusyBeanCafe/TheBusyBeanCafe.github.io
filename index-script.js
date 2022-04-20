@@ -39,15 +39,12 @@ async function donepwclicked() {
 	// TODO use shifts not this
 	var res = await getMenuItems(API_URL + "menu")
 	if ( res === false) {
-		console.log("wrong pass")
 		document.getElementById("password").value = ''
 		document.getElementById("password").classList.add("pw-invalid")
 	} else {
 		passmodal.style.display = "none"
 		sessionStorage.setItem('pass', pass);
 		authed()
-		// console.log(sheets_total_row)
-		// console.log("right pass")
 	}
 }
 
@@ -156,7 +153,6 @@ function shiftNavigation() {
 
 window.addEventListener("load", () => {
 	pass = window.sessionStorage.getItem("pass")
-	console.log(pass)
 	if (pass == null) {
 		getPass()
 	} else {

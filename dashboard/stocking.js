@@ -1,4 +1,4 @@
-const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
+// const API_URL = "https://thebusybeancafeapi.azurewebsites.net/";
 // const API_URL = "http://127.0.0.1:5000/";
 
 var pass;
@@ -24,9 +24,6 @@ async function submitStockUse() {
 	const currentStock = json[selectedOption]
 	let newStock = currentStock - val;
 
-	console.log("current", currentStock)
-	console.log("entered", val)
-	console.log("newstock", newStock);
 
 	object[selectedOption] = newStock;
 
@@ -49,9 +46,6 @@ async function submitStockUse() {
 			body: JSON.stringify(object)
 		})
 
-		console.log("posted")
-
-		console.log(object);
 
 		document.getElementById("count-" + Object.keys(object)[1]).innerHTML = Object.values(object)[1]
 		// ^ this is temporary solution to updating when submit pressed: i couldn't get updStock to update because of async garbage :(
@@ -127,8 +121,6 @@ async function submitStockNew() {
 	
 	let selectedOption = document.getElementById("current-stock-new").selectedOptions[0].value;
 
-	console.log(selectedOption);
-
 
 
 
@@ -143,16 +135,11 @@ async function submitStockNew() {
 
 
 
-	console.log("current", currentStock)
-	console.log("entered", val)
-	console.log("newstock", newStock);
-
-
 
 
 	object[selectedOption] = newStock;
 
-	console.log(object);
+
 
 
 	object.cost = val2
@@ -171,7 +158,6 @@ async function submitStockNew() {
 			body: JSON.stringify(object)
 		})
 
-		console.log("posted")
 
 		document.getElementById("count-" + Object.keys(object)[1]).innerHTML = Object.values(object)[1];
 	}
@@ -198,23 +184,21 @@ async function updStock() {
 			document.getElementById("dot-" + item).style.backgroundColor = "#388e3c";
 		}
 
-		console.log(item);
-		console.log(json[item])
 	}
 }
 
 
 window.addEventListener("load", () => {
-	console.log('balls')
+
 	pass = window.sessionStorage.getItem("pass")
-	console.log(pass)
+
 
 	document.getElementById("export-button").addEventListener('click', () => {
-		console.log("p[resssed")
+		// console.log("p[resssed")
 	})
 
 	if (pass == null) {
-		console.log("uh o")
+
 		window.location.href = "/index.html"
 	} else {
 		updStock()
