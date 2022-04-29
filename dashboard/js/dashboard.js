@@ -48,9 +48,51 @@ function getRevenuePerDay(response, period, paid) {
 			if (paid) {
 				// revenueArray[i] = (res[i].map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur, 0)));	
 
-				revenueArray[i] = (res[i].map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5))).reduce((prev, cur) => prev + cur, 0);
+				const ITEMS = res[i]
+
+				const PRICE_TIER_1 = ITEMS.filter(x => [0, 2, 3, 5, 8].includes(x["index"]))
+				const PRICE_TIER_2 = ITEMS.filter(x => [1, 4, 6].includes(x["index"]))
+				const PRICE_TIER_3 = ITEMS.filter(x => x["index"] == 7)
+
+				const PRICE_TIER_1_TOTAL = PRICE_TIER_1.map(
+					x => (x["payment"] != 3) * (3.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+				).reduce((prev, cur) => (prev + cur), 0);
+
+				const PRICE_TIER_2_TOTAL = PRICE_TIER_2.map(
+					x => (x["payment"] != 3) * (3.5 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+				).reduce((prev, cur) => (prev + cur), 0);
+
+				const PRICE_TIER_3_TOTAL = PRICE_TIER_3.map(
+					x => (x["payment"] != 3) * (4.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+				).reduce((prev, cur) => (prev + cur), 0);
+
+				const TOTAL_PRICE = PRICE_TIER_1_TOTAL + PRICE_TIER_2_TOTAL + PRICE_TIER_3_TOTAL
+
+
+				revenueArray[i] = TOTAL_PRICE
 			} else {
-				revenueArray[i] = (res[i].map(x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5))).reduce((prev, cur) => prev + cur, 0);
+				const ITEMS = res[i]
+
+				const PRICE_TIER_1 = ITEMS.filter(x => [0, 2, 3, 5, 8].includes(x["index"]))
+				const PRICE_TIER_2 = ITEMS.filter(x => [1, 4, 6].includes(x["index"]))
+				const PRICE_TIER_3 = ITEMS.filter(x => x["index"] == 7)
+
+				const PRICE_TIER_1_TOTAL = PRICE_TIER_1.map(
+					x => (x["payment"] == 3) * (3.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+				).reduce((prev, cur) => (prev + cur), 0);
+
+				const PRICE_TIER_2_TOTAL = PRICE_TIER_2.map(
+					x => (x["payment"] == 3) * (3.5 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+				).reduce((prev, cur) => (prev + cur), 0);
+
+				const PRICE_TIER_3_TOTAL = PRICE_TIER_3.map(
+					x => (x["payment"] == 3) * (4.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+				).reduce((prev, cur) => (prev + cur), 0);
+
+				const TOTAL_PRICE = PRICE_TIER_1_TOTAL + PRICE_TIER_2_TOTAL + PRICE_TIER_3_TOTAL
+
+
+				revenueArray[i] = TOTAL_PRICE
 			}
 			
 		} else {
@@ -82,38 +124,137 @@ function getItemAll(response) {
 function getRevenueAll(response) {
 	const curYear = new Date().getFullYear()
 
+	const CUR_YEAR_ITEMS = response.filter(x=> (new Date(x["date"]).getFullYear()) == curYear)
 
-	return response.filter(x=> (new Date(x["date"]).getFullYear()) == curYear).map(x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
+	const OLD_PRICING_ITEMS = CUR_YEAR_ITEMS.filter(x => x["date"] <= 1649975046000)
+
+	const NEW_PRICING_ITEMS = CUR_YEAR_ITEMS.filter(x => x["date"] > 1649975046000)
+
+
+
+	const OLD_TOTAL = OLD_PRICING_ITEMS.map((x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5))).reduce((prev, cur) => (prev + cur), 0);
+
+	const PRICE_TIER_1 = NEW_PRICING_ITEMS.filter(x => [0, 2, 3, 5, 8].includes(x["index"]))
+	const PRICE_TIER_2 = NEW_PRICING_ITEMS.filter(x => [1, 4, 6].includes(x["index"]))
+	const PRICE_TIER_3 = NEW_PRICING_ITEMS.filter(x => x["index"] == 7)
+
+	const PRICE_TIER_1_TOTAL = PRICE_TIER_1.map(
+		x => (x["payment"] != 3) * (3.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+	).reduce((prev, cur) => (prev + cur), 0);
+
+	const PRICE_TIER_2_TOTAL = PRICE_TIER_2.map(
+		x => (x["payment"] != 3) * (3.5 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+	).reduce((prev, cur) => (prev + cur), 0);
+
+	const PRICE_TIER_3_TOTAL = PRICE_TIER_3.map(
+		x => (x["payment"] != 3) * (4.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+	).reduce((prev, cur) => (prev + cur), 0);
+
+	const NEW_TOTAL = PRICE_TIER_1_TOTAL + PRICE_TIER_2_TOTAL + PRICE_TIER_3_TOTAL
+	
+
+
+	return OLD_TOTAL + NEW_TOTAL
 }
 
-function getRevenue(response) {
-	OLD_PRICING = (x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5));
-
-	// NEW_PRICING = (
-	// 	x => (x["payment"] != 3) * 
-	// 	((x["index"] == 0 ? )
-		
-		
-	// 	)
-		
-	// )
-
+function getRevenue(response) { // PAID: payment != 3
 	const rangeResponse = getRange(response, 604_800_000);
+
+
 	if (rangeResponse.length == 0) {
 		return 0;
 	} else {
-		return rangeResponse.map(OLD_PRICING).reduce((prev, cur) => (prev + cur));
+		// price tiers:
+		// hc, no milk coffee, cookie = 3 / 3.5
+		// milk coffee = 3.5 / 4
+		// mocha = 4 / 4.5
+
+
+		/* indicies
+		 0 HC
+		1 ("FW",
+         2 ("ES",
+         3 ("AM",
+        4 ("CP",
+         5 ("LB", 
+        6 ("PC", 
+        7 ("MC", 
+		 8 COOKIE
+		*/
+
+
+		const OLD_PRICING_ITEMS = rangeResponse.filter(x => x["date"] <= 1649975046000)
+
+		const NEW_PRICING_ITEMS = rangeResponse.filter(x => x["date"] > 1649975046000)
+
+
+
+
+		const OLD_TOTAL = OLD_PRICING_ITEMS.map((x => (x["payment"] != 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5))).reduce((prev, cur) => (prev + cur), 0);
+
+
+		const PRICE_TIER_1 = NEW_PRICING_ITEMS.filter(x => [0, 2, 3, 5, 8].includes(x["index"]))
+		const PRICE_TIER_2 = NEW_PRICING_ITEMS.filter(x => [1, 4, 6].includes(x["index"]))
+		const PRICE_TIER_3 = NEW_PRICING_ITEMS.filter(x => x["index"] == 7)
+
+		const PRICE_TIER_1_TOTAL = PRICE_TIER_1.map(
+			x => (x["payment"] != 3) * (3.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+		).reduce((prev, cur) => (prev + cur), 0);
+
+		const PRICE_TIER_2_TOTAL = PRICE_TIER_2.map(
+			x => (x["payment"] != 3) * (3.5 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+		).reduce((prev, cur) => (prev + cur), 0);
+
+		const PRICE_TIER_3_TOTAL = PRICE_TIER_3.map(
+			x => (x["payment"] != 3) * (4.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+		).reduce((prev, cur) => (prev + cur), 0);
+
+		const NEW_TOTAL = PRICE_TIER_1_TOTAL + PRICE_TIER_2_TOTAL + PRICE_TIER_3_TOTAL
+
+		return OLD_TOTAL + NEW_TOTAL
 	}
 }
 
-function getFreeCoffeeAmount(response) {
+function getFreeCoffeeAmount(response) { // FREE: payment == 3
 	const rangeResponse = getRange(response, 604_800_000);
 
 	if (rangeResponse.length == 0) {
 		return 0;
 	} else {
-		return rangeResponse.map(x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)).reduce((prev, cur) => (prev + cur));
+		const OLD_PRICING_ITEMS = rangeResponse.filter(x => x["date"] <= 1649975046000)
+
+		const NEW_PRICING_ITEMS = rangeResponse.filter(x => x["date"] > 1649975046000)
+
+
+
+
+		const OLD_TOTAL = OLD_PRICING_ITEMS.map((x => (x["payment"] == 3) * ((x["index"] == 0 ? 2.0 : 2.5) + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5))).reduce((prev, cur) => (prev + cur), 0);
+
+
+		const PRICE_TIER_1 = NEW_PRICING_ITEMS.filter(x => [0, 2, 3, 5, 8].includes(x["index"]))
+		const PRICE_TIER_2 = NEW_PRICING_ITEMS.filter(x => [1, 4, 6].includes(x["index"]))
+		const PRICE_TIER_3 = NEW_PRICING_ITEMS.filter(x => x["index"] == 7)
+
+		const PRICE_TIER_1_TOTAL = PRICE_TIER_1.map(
+			x => (x["payment"] == 3) * (3.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+		).reduce((prev, cur) => (prev + cur), 0);
+
+		const PRICE_TIER_2_TOTAL = PRICE_TIER_2.map(
+			x => (x["payment"] == 3) * (3.5 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+		).reduce((prev, cur) => (prev + cur), 0);
+
+		const PRICE_TIER_3_TOTAL = PRICE_TIER_3.map(
+			x => (x["payment"] == 3) * (4.0 + (((x["milk"] != 0) && (x["milk"] !== null)) + (x["large"]) + (x["syrup"] !== null)) * 0.5)
+		).reduce((prev, cur) => (prev + cur), 0);
+
+		const NEW_TOTAL = PRICE_TIER_1_TOTAL + PRICE_TIER_2_TOTAL + PRICE_TIER_3_TOTAL
+
+		return OLD_TOTAL + NEW_TOTAL
 	}
+
+	// to future people reading this, if you want to simplify the code base, change all of these
+	// statements to have an initial value of 0
+	// .reduce(..., 0)
 }
 
 function getDays(period) {
