@@ -9,11 +9,9 @@ function getCurrentDate() {
 
 }
 
-var pass
+var pass = ''
 
 function getPass() {
-	passmodal = document.getElementById("pass-modal");
-	passmodal.style.display = "flex"
 }
 
 function authed() {
@@ -152,12 +150,7 @@ function shiftNavigation() {
 
 
 window.addEventListener("load", () => {
-	pass = window.sessionStorage.getItem("pass")
-	if (pass == null) {
-		getPass()
-	} else {
 		authed()
-	}
 });
 
 

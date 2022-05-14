@@ -679,13 +679,7 @@ function confirmCancelEnd() {
 
 
 window.addEventListener("load", () => {
-	pass = window.sessionStorage.getItem("pass")
-	if (pass == null) {
-		window.location.href = "/index.html"
-	} else {
-		initpreorder()
-		getMenuItems(API_URL + "menu")
-	}
+	pass = ''
 
 	getCurrentDate();
 	modal = document.getElementById("drink-options-modal");
